@@ -4,22 +4,22 @@ import './Homesections.css';
 
 // ── 1. SKILLS DATA ───────────────────────────────────────────
 const SKILL_ROWS = [
-  { name: 'React',        icon: '⚛',  level: 90, color: '#61dafb' },
-  { name: 'JavaScript',   icon: 'JS', level: 85, color: '#f7df1e' },
-  { name: 'Firebase',     icon: '🔥', level: 85, color: '#ff9500' },
-  { name: 'Java',         icon: '☕', level: 80, color: '#f89820' },
-  { name: 'Node.js',      icon: '⬡',  level: 72, color: '#6cc24a' },
-  { name: 'OpenAI API',   icon: '◎',  level: 75, color: '#10a37f' },
-  { name: 'CSS / Tailwind',icon: '✦', level: 88, color: '#38bdf8' },
-  { name: 'Git & GitHub', icon: '⌥',  level: 88, color: '#f05032' },
+  { name: 'React',                icon: 'Re', level: 90, color: '#111' },
+  { name: 'JavaScript',           icon: 'JS', level: 85, color: '#111' },
+  { name: 'Java',                 icon: 'Jv', level: 80, color: '#111' },
+  { name: 'Firebase',             icon: 'Fb', level: 85, color: '#111' },
+  { name: 'SQL & Databases',      icon: 'DB', level: 80, color: '#111' },
+  { name: 'Information Security', icon: 'Se', level: 78, color: '#111' },
+  { name: 'Node.js',              icon: 'Nd', level: 72, color: '#111' },
+  { name: 'Distributed Systems',  icon: 'DS', level: 72, color: '#111' },
 ];
 
 // ── 2. STATS DATA ────────────────────────────────────────────
 const STATS = [
-  { value: 4,    suffix: '+', label: 'Projects Built',      icon: '◈' },
-  { value: 2,    suffix: '+', label: 'Years Coding',        icon: '◉' },
-  { value: 6,    suffix: '+', label: 'Technologies Used',   icon: '◇' },
-  { value: 100,  suffix: '%', label: 'Passion for Building',icon: '♥' },
+  { value: 6,   suffix: '+', label: 'Projects Shipped'    },
+  { value: 3,   suffix: '+', label: 'Years Coding'        },
+  { value: 12,  suffix: '+', label: 'Technologies'        },
+  { value: 360, suffix: '',  label: 'Academic Credits'    },
 ];
 
 // ── Intersection observer hook ───────────────────────────────
@@ -73,9 +73,8 @@ function SkillsSection() {
           <div className={`hs-skills-left ${visible ? 'hs-in' : ''}`} style={{ transitionDelay: '0.05s' }}>
             <h2 className="hs-title">Skills &amp;<br /><span>Tech Stack</span></h2>
             <p className="hs-body">
-              Technologies I've picked up through projects,
-              coursework, and relentless building — from
-              front-end interfaces to AI integrations.
+              Technologies picked up through three years of BSc Computer Science,
+              personal projects, and hands-on building.
             </p>
             <Link to="/skills" className="hs-cta">
               Full skill breakdown ↗
@@ -90,7 +89,7 @@ function SkillsSection() {
                 style={{ transitionDelay: `${0.08 + i * 0.055}s` }}
               >
                 <div className="hs-skill-meta">
-                  <span className="hs-skill-icon" style={{ color: s.color }}>{s.icon}</span>
+                  <span className="hs-skill-icon">{s.icon}</span>
                   <span className="hs-skill-name">{s.name}</span>
                   <span className="hs-skill-pct">{s.level}%</span>
                 </div>
@@ -99,7 +98,7 @@ function SkillsSection() {
                     className="hs-skill-fill"
                     style={{
                       width: visible ? `${s.level}%` : '0%',
-                      background: s.color,
+                      background: '#111',
                       transitionDelay: `${0.15 + i * 0.06}s`,
                     }}
                   />
@@ -131,7 +130,7 @@ function AboutSection() {
 
         <div className="hs-about-layout">
 
-          {/* Left — big card */}
+          {/* Left — bio card */}
           <div className={`hs-about-card ${visible ? 'hs-in' : ''}`} style={{ transitionDelay: '0.05s' }}>
             <div className="hs-about-avatar">NA</div>
             <div className="hs-about-tag-row">
@@ -139,15 +138,16 @@ function AboutSection() {
                 <span className="hs-avail-dot" />
                 Open to work
               </span>
-              <span className="hs-about-loc">📍 United Kingdom</span>
+              <span className="hs-about-loc">United Kingdom</span>
             </div>
             <h3 className="hs-about-name">Nibir Abeer</h3>
-            <p className="hs-about-role">Frontend &amp; Full-Stack Developer</p>
+            <p className="hs-about-role">Full-Stack Developer · BSc Computer Science (2:1)</p>
             <p className="hs-about-bio">
-              When I'm not coding, I'm exploring new frameworks, contributing to coursework projects, or dreaming up the next thing to build.
+              Graduate of the University of Bedfordshire, specialising in full-stack development,
+              AI integration, distributed systems, and information security.
             </p>
             <div className="hs-about-chips">
-              {['React', 'Firebase', 'AI', 'Agile', 'UI/UX'].map(c => (
+              {['React', 'Node.js', 'Firebase', 'AI', 'Security', 'Agile'].map(c => (
                 <span key={c} className="hs-chip">{c}</span>
               ))}
             </div>
@@ -168,13 +168,13 @@ function AboutSection() {
               {
                 icon: '◉',
                 title: 'Learner',
-                body: 'Always exploring new frameworks, APIs, and design patterns. Currently deep in React, OpenAI, and agile methodologies.',
+                body: 'Constantly exploring new patterns and technologies. Currently focused on distributed systems, cloud architecture, and AI integration.',
                 delay: '0.18s',
               },
               {
                 icon: '◇',
                 title: 'Collaborator',
-                body: 'Comfortable in team environments, sprint planning, and code reviews. Open to internships and freelance work.',
+                body: 'Experienced in Agile environments, sprint planning, and team delivery. Open to full-time roles and freelance projects.',
                 delay: '0.26s',
               },
             ].map(h => (
@@ -224,7 +224,6 @@ function StatsSection() {
               className={`hs-stat-card ${visible ? 'hs-in' : ''}`}
               style={{ transitionDelay: `${0.1 + i * 0.08}s` }}
             >
-              <span className="hs-stat-icon">{s.icon}</span>
               <p className="hs-stat-value">
                 <Counter target={s.value} suffix={s.suffix} active={visible} />
               </p>
@@ -247,9 +246,6 @@ function StatsSection() {
   );
 }
 
-// ════════════════════════════════════════════════════════════
-// EXPORT — all three sections
-// ════════════════════════════════════════════════════════════
 export default function HomeSections() {
   return (
     <>

@@ -121,4 +121,15 @@
   .page-hero    { padding: 40px 20px 28px; }
   .page-section { padding: 0 20px 60px; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .page-title   { font-size: clamp(40px, 10vw, 72px); letter-spacing: -1px; }
+  .page-divider { margin: 32px 0; }
+}
+
+@media (max-width: 480px) {
+  .page-wrapper  { padding-top: 80px; }
+  .page-hero     { padding: 28px 16px 20px; }
+  .page-section  { padding: 0 16px 48px; }
+  .page-title    { font-size: clamp(36px, 9vw, 56px); }
+  .page-subtitle { font-size: 14.5px; }
+  .card          { padding: 20px; border-radius: 12px; }
 }

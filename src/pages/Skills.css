@@ -1,3 +1,28 @@
+/* Degree context banner */
+.skills-degree-banner {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 4px;
+}
+
+.skills-degree-title {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #111;
+  margin: 0 0 6px;
+}
+
+.skills-degree-modules {
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #888;
+  line-height: 1.65;
+  margin: 0;
+}
+
 .skill-group-header {
   display: flex;
   align-items: center;

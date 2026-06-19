@@ -1,45 +1,75 @@
 .header-container {
-  position: relative; /* Relative positioning for absolute children */
-  height: 100vh; /* Full viewport height */
-  width: 100vw; /* Full viewport width */
-  overflow: hidden; /* Hide overflow to keep the layout tidy */
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
+/* ─── Character image (in front) ──────────────────────── */
 .header-image {
-  position: absolute; /* Position the image absolutely */
-  top: 55%; /* Center it vertically */
-  left: 50%; /* Center it horizontally */
-  height: 85vh; /* Adjust height responsively (85% of viewport height) */
-  width: auto; /* Maintain aspect ratio */
-  min-width: 300px; /* Ensure it covers a minimum width */
-  min-height: 300px; /* Ensure it covers a minimum height */
-  max-height: 85vh; /* Prevent the image from exceeding the viewport */
-  transform: translate(-50%, -50%); /* Center the image */
-  object-fit: cover; /* Ensures the image covers the container */
-  z-index: 2; /* Set the image above the text */
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  height: 85vh;
+  width: auto;
+  min-width: 300px;
+  min-height: 300px;
+  max-height: 85vh;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 2;
 }
 
-/* Zooming text style */
-.zooming-text-container {
-  font-family: 'Qwitcher Grypen', cursive; /* Using Qwitcher Grypen */
-  text-align: center; /* Center text */
-  display: flex; /* Use flexbox for horizontal alignment */
-  align-items: center; /* Align items vertically centered */
+/* ─── Marquee strip (behind character) ─────────────────── */
+.marquee-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
 }
 
-/* Media Queries to adjust for smaller screens */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-rtl 18s linear infinite;
+}
+
+.marquee-track span {
+  font-family: 'Saira Condensed', sans-serif;
+  font-size: 14vw;
+  font-weight: 700;
+  color: #111;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Right-to-left: track moves from 0 to its own -50% */
+@keyframes marquee-rtl {
+  from { transform: translateX(0%);   }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 768px) {
   .header-image {
-    height: 50vh; /* Adjust image height on smaller screens */
-    min-width: 200px; /* Minimum width for smaller devices */
-    min-height: 200px; /* Minimum height for smaller devices */
+    height: 50vh;
+    min-width: 200px;
+    min-height: 200px;
   }
+  .marquee-track span { font-size: 18vw; }
 }
 
 @media (max-width: 480px) {
   .header-image {
-    height: 40vh; /* Smaller image height for very small screens */
-    min-width: 150px; /* Minimum width for very small devices */
-    min-height: 150px; /* Minimum height for very small devices */
+    height: 40vh;
+    min-width: 150px;
+    min-height: 150px;
   }
+  .marquee-track span { font-size: 20vw; }
 }

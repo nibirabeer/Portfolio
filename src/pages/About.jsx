@@ -4,34 +4,41 @@ import '../pages.css';
 import './About.css';
 
 const TIMELINE = [
-  { 
-    year: '2026', 
-    title: 'BSc (Hons) Computer Science Graduate', 
-    desc: 'Graduated from the University of Bedfordshire with Honors. Currently taking on complex freelance challenges and seeking a full-time role to apply my engineering skills.' 
+  {
+    year: '2025',
+    title: 'BSc (Hons) Computer Science — 2:1',
+    desc: 'Graduated from the University of Bedfordshire with a Second Class Upper Division (2:1) Honours degree. Now actively seeking a full-time software engineering role while taking on freelance projects.',
   },
-  { 
-    year: '2025', 
-    title: 'FinWizard — Capstone Project', 
-    desc: 'Engineered an AI-powered personal finance ecosystem using React, Node.js, and Firebase, integrating the OpenAI API for intelligent financial insights.' 
+  {
+    year: '2024–25',
+    title: 'Final Year — Distributed Systems & Undergraduate Project',
+    desc: 'Completed Distributed Service Architectures, Agile Project Management, and Research Methodologies. Built FinWizard as my undergraduate project — an AI-powered personal finance app using React, Node.js, Firebase, and the OpenAI API.',
   },
-  { 
-    year: '2025', 
-    title: 'Banana Equation Game', 
-    desc: 'Architected a Java-based turn-driven game featuring custom GUI components, Firebase authentication, and real-time leaderboard synchronization.' 
+  {
+    year: '2023–24',
+    title: 'Year 2 — AI, Security & Web Technologies',
+    desc: 'Studied Information Security, Desktop Applications Development & Software Engineering, Concepts and Technologies of AI, and Web Technologies and Platforms. Built Banana Equation (Java/Firebase game) and Pencraft (collaborative writing platform).',
   },
-  { 
-    year: '2024', 
-    title: 'Full-Stack Development & Pancraft', 
-    desc: 'Expanded into full-stack architecture with Pancraft, mastering React state management and Firebase NoSQL database structures.' 
+  {
+    year: '2022–23',
+    title: 'Year 1 — CS Foundations',
+    desc: 'Established core knowledge across CS Fundamentals, Mathematics and Concepts for Computational Thinking, Databases & Computer Networks, and Principles of Programming & Data Structures.',
   },
-  { 
-    year: '2022', 
-    title: 'The Journey Begins', 
-    desc: 'Started BSc at the University of Bedfordshire, establishing a foundation in Software Engineering, Agile methodologies, and AI principles.' 
+  {
+    year: '2022',
+    title: 'The Journey Begins',
+    desc: 'Enrolled at the University of Bedfordshire, University Square Campus, Luton to study Computer Science — and wrote my very first lines of code.',
   },
 ];
 
-const INTERESTS = ['Full-Stack Development', 'AI & Machine Learning', 'UI/UX Design', 'Game Development', 'Open Source', 'Agile Methodologies'];
+const INTERESTS = [
+  'Full-Stack Development',
+  'AI & Machine Learning',
+  'Information Security',
+  'Distributed Systems',
+  'UI/UX Design',
+  'Agile Methodologies',
+];
 
 export default function About() {
   return (
@@ -40,7 +47,7 @@ export default function About() {
         <p className="page-tag"><span className="page-tag-dot" /> The person behind the code</p>
         <h1 className="page-title">About <span>Me</span></h1>
         <p className="page-subtitle">
-          Computer science student, builder, and design-obsessed developer based in the UK.
+          Computer Science graduate, builder, and design-obsessed developer based in the UK.
         </p>
       </div>
 
@@ -53,6 +60,14 @@ export default function About() {
               <div className="about-avatar">NA</div>
               <h2 className="about-name">Nibir Abeer</h2>
               <p className="about-role">Frontend &amp; Full-Stack Developer</p>
+
+              <div className="about-degree-badge">
+                <div>
+                  <p className="about-degree-title">BSc (Hons) Computer Science — 2:1</p>
+                  <p className="about-degree-uni">University of Bedfordshire · Luton, UK · 2025</p>
+                </div>
+              </div>
+
               <p className="about-location">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
@@ -60,12 +75,15 @@ export default function About() {
                 </svg>
                 United Kingdom
               </p>
+
               <p className="about-bio">
-                I am a recent Computer Science graduate with Honors from the University of Bedfordshire, dedicated to the art of building seamless digital experiences. My work lives at the intersection of design and engineering—where clean, efficient code meets intuitive UI.
+                I'm a Computer Science graduate from the University of Bedfordshire with a 2:1 Honours degree,
+                specialising in full-stack development, AI integration, and distributed systems.
+                My work lives at the intersection of design and engineering — where clean, efficient code meets intuitive UI.
               </p>
               <p className="about-bio">
-                When I'm not coding, I'm exploring new frameworks, contributing to coursework
-                projects, or dreaming up the next thing to build.
+                Through three years of study and hands-on projects I've built everything from AI-powered finance apps
+                and collaborative writing platforms to Java games with real-time leaderboards.
               </p>
 
               <div className="about-interests">

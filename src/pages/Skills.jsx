@@ -5,50 +5,62 @@ import { useGitHubRepos, computeLangSkills } from '../hooks/useGitHub';
 
 const STATIC_GROUPS = [
   {
-    category: 'Frontend',
+    category: 'Web Development',
     icon: '◈',
     skills: [
-      { name: 'React',       level: 90 },
-      { name: 'JavaScript',  level: 85 },
-      { name: 'HTML & CSS',  level: 92 },
-      { name: 'Tailwind',    level: 78 },
+      { name: 'React',           level: 90 },
+      { name: 'JavaScript',      level: 85 },
+      { name: 'HTML & CSS',      level: 92 },
+      { name: 'Tailwind CSS',    level: 78 },
     ],
   },
   {
-    category: 'Backend',
+    category: 'Backend & Databases',
     icon: '◉',
     skills: [
-      { name: 'Node.js',   level: 72 },
-      { name: 'Firebase',  level: 85 },
-      { name: 'REST APIs', level: 80 },
+      { name: 'Node.js',         level: 72 },
+      { name: 'Firebase',        level: 85 },
+      { name: 'SQL & Databases', level: 80 },
+      { name: 'REST APIs',       level: 80 },
     ],
   },
   {
-    category: 'AI & ML',
+    category: 'Software Engineering',
+    icon: '◇',
+    skills: [
+      { name: 'Data Structures & Algorithms', level: 80 },
+      { name: 'OOP & Design Patterns',        level: 82 },
+      { name: 'Desktop App Development',      level: 76 },
+      { name: 'Git & Version Control',        level: 88 },
+    ],
+  },
+  {
+    category: 'AI & Distributed Systems',
     icon: '◎',
     skills: [
-      { name: 'OpenAI API',    level: 75 },
-      { name: 'ML Concepts',   level: 65 },
-      { name: 'Data Analysis', level: 60 },
+      { name: 'AI Concepts & Applications',  level: 75 },
+      { name: 'OpenAI API Integration',      level: 75 },
+      { name: 'Distributed Architectures',   level: 72 },
+      { name: 'Computer Networks',           level: 76 },
     ],
   },
   {
-    category: 'Tools',
+    category: 'Security & Research',
     icon: '◈',
     skills: [
-      { name: 'Git & GitHub', level: 88 },
-      { name: 'Figma',        level: 70 },
-      { name: 'VS Code',      level: 95 },
-      { name: 'Eclipse',      level: 75 },
+      { name: 'Information Security',        level: 78 },
+      { name: 'Research Methodologies',      level: 74 },
+      { name: 'Technical Documentation',     level: 78 },
     ],
   },
   {
-    category: 'Soft Skills',
+    category: 'Professional Skills',
     icon: '◐',
     skills: [
-      { name: 'Agile / Scrum',      level: 80 },
-      { name: 'Problem Solving',    level: 88 },
-      { name: 'Team Collaboration', level: 90 },
+      { name: 'Agile / Scrum',              level: 82 },
+      { name: 'Project Management',         level: 78 },
+      { name: 'Problem Solving',            level: 88 },
+      { name: 'Team Collaboration',         level: 90 },
     ],
   },
 ];
@@ -86,7 +98,6 @@ function SkeletonBar() {
 
 export default function Skills() {
   const { repos, loading } = useGitHubRepos();
-
   const langSkills = loading ? [] : computeLangSkills(repos);
 
   const languageGroup = {
@@ -110,12 +121,27 @@ export default function Skills() {
         <p className="page-tag"><span className="page-tag-dot" /> What I know</p>
         <h1 className="page-title">My <span>Skills</span></h1>
         <p className="page-subtitle">
-          Technologies and tools I've picked up through projects, coursework, and relentless building.
+          Built across three years of BSc Computer Science — from databases and security
+          to AI, distributed systems, and full-stack web development.
         </p>
       </div>
 
       <div className="page-section">
+
+        {/* Degree context banner */}
+        <div className="skills-degree-banner fade-up fade-up-1">
+          <div>
+            <p className="skills-degree-title">BSc (Hons) Computer Science — 2:1 · University of Bedfordshire · 2025</p>
+            <p className="skills-degree-modules">
+              CS Fundamentals · Databases & Networks · Programming & Data Structures ·
+              Information Security · Software Engineering · AI Concepts · Web Technologies ·
+              Distributed Service Architectures · Research Methodologies · Agile Project Management
+            </p>
+          </div>
+        </div>
+
         <div className="page-divider" />
+
         <div className="grid-2">
           {groups.map((group, gi) => (
             <div className={`card fade-up fade-up-${(gi % 4) + 1}`} key={group.category}>

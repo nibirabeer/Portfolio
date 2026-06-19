@@ -1,53 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import Background from '../Background'; // Adjusted import path
-import './Header.css'; // Ensure you have a separate CSS file for styling
+import React from 'react';
+import Background from '../Background';
+import './Header.css';
+
+const MARQUEE_TEXT = 'NIBIR ABEER · NIBIR ABEER · NIBIR ABEER · NIBIR ABEER · ';
 
 function Header() {
-  const [scale, setScale] = useState(1); // State to manage zoom level
-
-  // Effect to handle scroll events
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY; // Get the current scroll position
-      const newScale = 1 + scrollTop / 1000; // Adjust zoom factor as needed
-      setScale(newScale);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
-    <Background> {/* Wrap the entire content with Background */}
+    <Background>
       <div className="header-container relative flex items-center justify-center">
-        {/* Main Header Image */}
+
+        {/* Infinite left-to-right scrolling text — behind the character */}
+        <div className="marquee-wrapper" aria-hidden="true">
+          <div className="marquee-track">
+            <span>{MARQUEE_TEXT}</span>
+            <span>{MARQUEE_TEXT}</span>
+          </div>
+        </div>
+
+        {/* Character image — sits in front of the marquee */}
         <img
-          src="/C1.png" // Adjust the image path as needed
+          src="/C1.png"
           alt="Header Image"
-          className="header-image object-cover" // Use object-cover for better responsiveness
+          className="header-image object-cover"
         />
 
-        {/* Zooming Text that scales when scrolling down */}
-        <div
-          className="zooming-text-container"
-          style={{
-            transform: `translate(-50%, -50%) scale(${scale})`, // Apply zoom effect
-            position: 'absolute',
-            top: '50%', // Center vertically
-            left: '50%', // Center horizontally
-            transition: 'transform 0.2s ease-in-out', // Smooth transition for zoom
-            color: 'black', // Set the text color to black
-            fontSize: '14vw', // Responsive font size
-            zIndex: 1, // Ensure text is below the header image
-            whiteSpace: 'nowrap', // Prevent text from wrapping
-          }}
-        >
-          NIBIR ABEER
-        </div>
       </div>
     </Background>
   );

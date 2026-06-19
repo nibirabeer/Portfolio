@@ -277,6 +277,15 @@
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .proj-topbar { flex-direction: column; align-items: flex-start; }
+  .proj-topbar     { flex-direction: column; align-items: flex-start; }
   .proj-github-btn { align-self: flex-start; }
+  .proj-title      { font-size: 22px; }
+  .proj-links      { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  .proj-filters       { gap: 5px; }
+  .proj-filter-btn    { font-size: 12px; padding: 6px 12px; }
+  .proj-card          { gap: 10px; }
+  .proj-link          { font-size: 12.5px; padding: 7px 12px; }
 }

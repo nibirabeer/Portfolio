@@ -121,7 +121,7 @@ function Footer() {
             <span className="footer-dot" />
             <span>Open to work — let's build something great</span>
           </div>
-          <p className="footer-made">Made with <span className="footer-heart">♥</span> using React</p>
+          <p className="footer-made">Made with <span className="footer-heart">♥</span></p>
         </div>
       </div>
     </footer>

@@ -312,12 +312,16 @@ body {
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .nav-links        { display: none; }
+  .nav-links          { display: none; }
   .availability-badge { display: none; }
-  .hamburger        { display: flex; }
+  .hamburger          { display: flex; }
 }
 
 @media (max-width: 480px) {
-  .navbar { width: 94%; }
-  .navbar-name { font-size: 15px; }
+  .navbar             { width: 94%; top: 12px; padding: 8px 14px; }
+  .navbar-name        { font-size: 15px; }
+  .btn-socials        { font-size: 12.5px; padding: 6px 13px; }
+  .mobile-menu        { top: 68px; width: 94%; }
+  .mobile-menu ul a,
+  .mobile-menu ul button { font-size: 14px; padding: 11px 14px; }
 }

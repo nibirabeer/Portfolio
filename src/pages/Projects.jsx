@@ -9,12 +9,23 @@ import {
   getStack,
 } from '../hooks/useGitHub';
 import { VERCEL_LINKS, PRIVATE_PROJECTS } from '../config/vercelLinks';
+import { PROJECT_STATUS } from '../config/projectStatus';
 
 function getVercelUrl(repoName) {
   const key = Object.keys(VERCEL_LINKS).find(
     k => k.toLowerCase() === repoName.toLowerCase()
   );
   return key ? VERCEL_LINKS[key] : null;
+}
+
+function getStatus(repo) {
+  // Manual override in projectStatus.js takes priority
+  const manual = Object.keys(PROJECT_STATUS).find(
+    k => k.toLowerCase() === repo.name.toLowerCase()
+  );
+  if (manual) return PROJECT_STATUS[manual];
+  // Auto: 1 commit = In Progress; multiple commits + Vercel = Completed
+  return detectStatus(repo, !!getVercelUrl(repo.name));
 }
 
 const FILTERS = ['All', 'Web', 'AI', 'Game'];
@@ -62,7 +73,7 @@ export default function Projects() {
   const publicProjects = repos.map(r => ({
     title:     prettifyName(r.name),
     tag:       detectTag(r),
-    status:    detectStatus(r),
+    status:    getStatus(r),
     desc:      r.description || 'No description provided.',
     stack:     getStack(r),
     year:      new Date(r.created_at).getFullYear().toString(),
