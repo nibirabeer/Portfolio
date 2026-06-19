@@ -1,0 +1,16 @@
+/* CookieConsentPopup.css */
+
+.cookie-popup {
+    position: fixed; /* Fixed position to stay at the top */
+    top: 0; /* Align at the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Align to the right */
+    background: radial-gradient(125% 125% at 50% 10%, #000 40%, rgba(99, 238, 255, 1) 100%);
+    color: #fff; /* White text */
+    padding: 20px; /* Padding around the content */
+    border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+    display: flex; /* Flex for layout */
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center items horizontally */
+    z-index: 1000; /* Ensure it is above other elements */
+  }

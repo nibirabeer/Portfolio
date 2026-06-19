@@ -1,0 +1,45 @@
+.header-container {
+  position: relative; /* Relative positioning for absolute children */
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  overflow: hidden; /* Hide overflow to keep the layout tidy */
+}
+
+.header-image {
+  position: absolute; /* Position the image absolutely */
+  top: 55%; /* Center it vertically */
+  left: 50%; /* Center it horizontally */
+  height: 85vh; /* Adjust height responsively (85% of viewport height) */
+  width: auto; /* Maintain aspect ratio */
+  min-width: 300px; /* Ensure it covers a minimum width */
+  min-height: 300px; /* Ensure it covers a minimum height */
+  max-height: 85vh; /* Prevent the image from exceeding the viewport */
+  transform: translate(-50%, -50%); /* Center the image */
+  object-fit: cover; /* Ensures the image covers the container */
+  z-index: 2; /* Set the image above the text */
+}
+
+/* Zooming text style */
+.zooming-text-container {
+  font-family: 'Qwitcher Grypen', cursive; /* Using Qwitcher Grypen */
+  text-align: center; /* Center text */
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Align items vertically centered */
+}
+
+/* Media Queries to adjust for smaller screens */
+@media (max-width: 768px) {
+  .header-image {
+    height: 50vh; /* Adjust image height on smaller screens */
+    min-width: 200px; /* Minimum width for smaller devices */
+    min-height: 200px; /* Minimum height for smaller devices */
+  }
+}
+
+@media (max-width: 480px) {
+  .header-image {
+    height: 40vh; /* Smaller image height for very small screens */
+    min-width: 150px; /* Minimum width for very small devices */
+    min-height: 150px; /* Minimum height for very small devices */
+  }
+}

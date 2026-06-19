@@ -1,0 +1,173 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Bio card */
+.about-bio-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.about-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Saira Condensed", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.about-name {
+  font-family: "Saira Condensed", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 4px;
+}
+
+.about-role {
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #888;
+  margin: 0 0 10px;
+}
+
+.about-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.about-bio {
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #555;
+  line-height: 1.7;
+  margin: 0 0 12px;
+}
+
+.about-interests { margin-top: 6px; }
+
+.about-interests-label {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0 0 10px;
+}
+
+.about-interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.about-cta {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #fff;
+  background: #111;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  align-self: flex-start;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.about-cta:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+/* Timeline */
+.about-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0 0 20px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding-top: 28px;
+}
+
+.timeline-year {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #aaa;
+  letter-spacing: 0.5px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.timeline-line {
+  flex: 1;
+  width: 1px;
+  min-height: 30px;
+  background: rgba(0,0,0,0.1);
+}
+
+.timeline-content {
+  flex: 1;
+}
+
+.timeline-title {
+  font-family: "Saira Condensed", sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 8px;
+}
+
+.timeline-desc {
+  font-size: 13.5px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #666;
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr; }
+}

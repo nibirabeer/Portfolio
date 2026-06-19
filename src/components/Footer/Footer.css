@@ -1,0 +1,289 @@
+/* ─── Footer shell ───────────────────────────────────────── */
+.footer {
+  position: relative;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  overflow: hidden;
+  padding: 52px 0 28px;
+}
+
+/* Floating particles canvas */
+.footer-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content sits above canvas */
+.footer-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ─── Top row ────────────────────────────────────────────── */
+.footer-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Brand block */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeUp 0.6s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.footer-logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgb(254, 254, 254);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "Saira Condensed", sans-serif;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.footer-logo-mark:hover {
+  background: rgba(255, 255, 255, 0.709);
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.footer-brand-name {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Saira Condensed", sans-serif;
+  color: #fff;
+  margin: 0 0 2px;
+  letter-spacing: 0.1px;
+}
+
+.footer-brand-sub {
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+/* Nav links */
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.footer-nav-link {
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.18s, letter-spacing 0.18s;
+  letter-spacing: 0;
+}
+
+.footer-nav-link:hover {
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+
+/* Social buttons */
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.footer-social-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s, transform 0.18s, width 0.25s;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.footer-social-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: translateY(-3px);
+  width: auto;
+  padding: 0 12px 0 10px;
+  gap: 6px;
+}
+
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.footer-social-icon svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.footer-social-label {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  white-space: nowrap;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 0.25s ease, opacity 0.2s ease;
+}
+
+.footer-social-btn:hover .footer-social-label {
+  max-width: 80px;
+  opacity: 1;
+}
+
+/* ─── Divider ────────────────────────────────────────────── */
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.12) 20%,
+    rgba(255, 255, 255, 0.12) 80%,
+    transparent
+  );
+  margin: 36px 0 24px;
+  animation: expandWidth 0.8s 0.3s ease both;
+}
+
+@keyframes expandWidth {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ─── Bottom row ─────────────────────────────────────────── */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: fadeUp 0.6s 0.35s ease both;
+}
+
+.footer-copy {
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+/* Open-to-work status pill */
+.footer-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.footer-dot {
+  width: 7px;
+  height: 7px;
+  background: #22c55e;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* Made with love */
+.footer-made {
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+.footer-heart {
+  color: #f87171;
+  display: inline-block;
+  animation: heartbeat 1.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.25); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.18); }
+  70%       { transform: scale(1); }
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .footer-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-inner { padding: 0 20px; }
+  .footer        { padding: 40px 0 24px; }
+}

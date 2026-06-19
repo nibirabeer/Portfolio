@@ -1,0 +1,59 @@
+/* App.css */
+
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Serif Old Uyghur', serif; /* Default font */
+  background-color: #f9f9f9; /* Light background for the entire app */
+  color: #333; /* Default text color */
+}
+
+/* Header Styles */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full height */
+  position: relative; /* Position relative for absolute children */
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #333; /* Dark background for footer */
+  color: white; /* White text color */
+  text-align: center; /* Center text */
+  padding: 1rem; /* Padding for footer */
+  position: relative; /* To position it relative to other elements */
+  bottom: 0; /* Position it at the bottom */
+  width: 100%; /* Full width */
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column; /* Stack links vertically */
+}
+
+.footer-links a {
+  color: white; /* White text for links */
+  text-decoration: none; /* No underline */
+  margin: 0.5rem; /* Space between links */
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Additional Global Styles */
+a {
+  text-decoration: none; /* No underline on all links */
+}
+
+a:hover {
+  color: #007bff; /* Change color on hover */
+}

@@ -1,0 +1,56 @@
+name: Sync Vercel Projects & Deploy
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # runs every 6 hours automatically
+  workflow_dispatch:          # also allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync Vercel project links
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/sync-vercel.mjs
+
+      - name: Check if vercelLinks.js changed
+        id: diff
+        run: |
+          git add src/config/vercelLinks.js
+          git diff --staged --quiet && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit updated links
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: sync Vercel project links [skip ci]"
+          git push
+
+      - name: Build portfolio
+        if: steps.diff.outputs.changed == 'true'
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        if: steps.diff.outputs.changed == 'true'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
