@@ -1,0 +1,63 @@
+/* ─── Shell ────────────────────────────────────────────────── */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transform: translateY(0);
+  transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Slide the whole screen upward on exit */
+.preloader--out {
+  transform: translateY(-100%);
+}
+
+/* ─── Logo ─────────────────────────────────────────────────── */
+.preloader-logo {
+  animation: logo-pop 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+.preloader-logo img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes logo-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ─── Progress bar ─────────────────────────────────────────── */
+.preloader-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.preloader-bar-fill {
+  height: 100%;
+  width: 0;
+  background: #111;
+  animation: bar-fill 2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+}
+
+@keyframes bar-fill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
