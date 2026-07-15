@@ -1,0 +1,312 @@
+/* ═══════════════════════════════════════════════════════════
+   Featured work — draggable card slider (GSAP Draggable + InertiaPlugin).
+   Light glass theme, matching the rest of the site (var(--glass-*) tokens,
+   black/gray text) — only the accent color varies, and it's tied to the
+   same tag→color mapping the Projects page uses (see TAG_STYLE in
+   useGitHub.js), not an arbitrary palette. A center-focused size/opacity
+   hierarchy is recomputed every frame from each card's live distance to
+   the viewport's center; movement is user-driven only (drag or the arrow
+   buttons) — no autoplay.
+═══════════════════════════════════════════════════════════ */
+
+.stack-section {
+  width: 100%;
+  padding: 96px 0;
+  background: rgba(255, 255, 255, 0.45);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  position: relative;
+}
+
+.stack-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ─── Heading — deliberately not the site's usual serif: Orbitron's
+   geometric, tracked-out caps read as more "futuristic" for this one
+   accent moment. */
+.stack-heading {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 3.6vw, 42px);
+  color: #111;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin: 0 0 20px;
+}
+
+/* ─── Top bar — heading + CTA sit on one row above the slider ───── */
+.stack-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.stack-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #fff;
+  background: #111;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: background 0.15s, transform 0.14s;
+}
+
+.stack-cta:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+/* ─── Slider viewport — clips the track, fades its own edges so cards
+   don't look abruptly cropped as they drag past the visible bounds ─── */
+.slider-viewport {
+  overflow: hidden;
+  padding: 40px 0;
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+.slider-track {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: max-content;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.slider-track:active {
+  cursor: grabbing;
+}
+
+/* Apple "Liquid Glass" style card — a near-white translucent body, a
+   diagonal sheen highlight, and a soft ambient shadow, same as the rest of
+   the site's glass surfaces. Each card's scale/opacity/z-index are set
+   continuously from JS based on live distance to center (the hierarchy
+   effect); only the resting visual design lives here. --card-color (set
+   inline per project, from TAG_STYLE) tints the border, glow, tag, link
+   and watermark just enough to color-code by category without going neon. */
+.slider-card {
+  position: relative;
+  flex-shrink: 0;
+  width: 240px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1.5px solid color-mix(in srgb, var(--card-color) 35%, rgba(255, 255, 255, 0.8));
+  backdrop-filter: blur(26px) saturate(190%) brightness(1.04);
+  -webkit-backdrop-filter: blur(26px) saturate(190%) brightness(1.04);
+  box-shadow:
+    0 24px 50px -14px rgba(0, 0, 0, 0.16),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    0 0 26px -10px var(--card-color);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Diagonal sheen — a soft light reflection sweeping across the glass */
+.slider-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.15) 30%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.slider-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.slider-card-index {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #bbb;
+}
+
+.slider-card-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--card-color);
+  background: color-mix(in srgb, var(--card-color) 12%, #fff);
+  border: 1px solid color-mix(in srgb, var(--card-color) 25%, transparent);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+/* Giant faded index numeral — an editorial watermark behind the content,
+   tinted with the card's own color instead of a neutral gray. */
+.slider-card-watermark {
+  position: absolute;
+  z-index: -1;
+  right: -4px;
+  bottom: 14px;
+  font-family: "Hanken Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 140px;
+  line-height: 1;
+  letter-spacing: -7px;
+  color: color-mix(in srgb, var(--card-color) 16%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+.slider-card-title {
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.1;
+  margin: 0 0 7px;
+}
+
+.slider-card-desc {
+  font-size: 12.5px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.slider-card-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.slider-card-chip {
+  font-size: 10.5px;
+  font-weight: 500;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #444;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.slider-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: var(--card-color);
+  text-decoration: none;
+  transition: gap 0.15s;
+}
+
+.slider-card-link:hover {
+  gap: 9px;
+}
+
+.slider-card--skeleton {
+  padding: 22px;
+}
+
+.slider-card--skeleton .skel {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: stack-shimmer 1.4s infinite;
+}
+
+@keyframes stack-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Controls — prev/next sit centered below the slider ───── */
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.stack-nav {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  box-shadow: var(--glass-shadow), var(--glass-sheen);
+  color: #111;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.stack-nav svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stack-nav:hover {
+  background: #fff;
+  transform: scale(1.08);
+  box-shadow: var(--glass-shadow-hover), var(--glass-sheen);
+}
+
+.stack-nav:active {
+  transform: scale(0.92);
+}
+
+.stack-nav:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .stack-heading { text-align: center; }
+  .stack-topbar { flex-direction: column; align-items: center; gap: 14px; margin-bottom: 36px; }
+}
+
+@media (max-width: 480px) {
+  .stack-section { padding: 64px 0; }
+  .stack-inner   { padding: 0 20px; }
+  .slider-viewport { padding: 24px 0; }
+  .slider-card   { width: 210px; height: 340px; padding: 18px; }
+  .slider-card-title { font-size: 19px; }
+  .slider-card-watermark { font-size: 110px; bottom: 10px; }
+  .stack-nav     { width: 40px; height: 40px; }
+  .stack-nav svg { width: 17px; height: 17px; }
+}

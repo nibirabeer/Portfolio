@@ -95,6 +95,14 @@ export function prettifyName(name) {
   return name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
+// Shared with the Projects grid and the homepage slider so a project's tag
+// always reads as the same color everywhere it appears.
+export const TAG_STYLE = {
+  'Web':  { bg: '#eff6ff', color: '#1d4ed8' },
+  'AI':   { bg: '#f5f3ff', color: '#7c3aed' },
+  'Game': { bg: '#fff7ed', color: '#c2410c' },
+};
+
 export function detectTag(repo) {
   const topics = repo.topics || [];
   const desc   = (repo.description || '').toLowerCase();

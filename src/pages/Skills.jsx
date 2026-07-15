@@ -2,6 +2,8 @@ import React from 'react';
 import '../pages.css';
 import './Skills.css';
 import { useGitHubRepos, computeLangSkills } from '../hooks/useGitHub';
+import { ScrambleText, ScanText, RevealText } from '../components/fx';
+import PageBackground from '../components/PageBackground';
 
 const STATIC_GROUPS = [
   {
@@ -117,13 +119,20 @@ export default function Skills() {
 
   return (
     <div className="page-wrapper">
-      <div className="page-hero fade-up">
-        <p className="page-tag"><span className="page-tag-dot" /> What I know</p>
-        <h1 className="page-title">My <span>Skills</span></h1>
-        <p className="page-subtitle">
+      <PageBackground variant="constellation" />
+      <div className="page-hero">
+        <p className="page-tag">
+          <span className="page-tag-dot" />
+          <ScrambleText as="span" trigger="mount" delay={0.1}>What I know</ScrambleText>
+        </p>
+        <h1 className="page-title">
+          <ScanText as="span" trigger="mount" delay={0.3} color="#111">My</ScanText>{' '}
+          <ScanText as="span" trigger="mount" delay={0.5} color="#aaa">Skills</ScanText>
+        </h1>
+        <RevealText as="p" className="page-subtitle" trigger="mount" delay={0.7}>
           Built across three years of BSc Computer Science — from databases and security
           to AI, distributed systems, and full-stack web development.
-        </p>
+        </RevealText>
       </div>
 
       <div className="page-section">

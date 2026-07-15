@@ -1,8 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Fonts are loaded via <link> tags in index.html (Hedvig Letters Serif, Hanken Grotesk, Orbitron) */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Global reset ───────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─── Design tokens ──────────────────────────────────────── */
+:root {
+  /* glass — light surfaces */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-strong: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(17, 17, 17, 0.07);
+  --glass-blur: blur(22px) saturate(180%);
+  --glass-blur-soft: blur(14px) saturate(160%);
+  --glass-shadow: 0 8px 30px rgba(24, 24, 32, 0.07);
+  --glass-shadow-hover: 0 20px 48px rgba(24, 24, 32, 0.12);
+  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  /* glass — dark surfaces (footer / stats band) */
+  --glass-dark-bg: rgba(255, 255, 255, 0.055);
+  --glass-dark-bg-strong: rgba(255, 255, 255, 0.1);
+  --glass-dark-border: rgba(255, 255, 255, 0.12);
+  --glass-dark-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+
+  /* radius scale */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+}
+
+body {
+  font-family: "Hanken Grotesk", sans-serif;
+  min-height: 100vh;
+  background: #f7f7f4;
+}
+
+/* ─── Ambient background — soft blurred colour behind the glass ───
+   Fixed so it never scrolls; opaque page sections simply paint over it,
+   translucent glass surfaces let it bleed through. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(38rem 30rem at 8% 8%,  rgba(34, 197, 94, 0.10), transparent 60%),
+    radial-gradient(34rem 28rem at 96% 18%, rgba(96, 165, 250, 0.10), transparent 60%),
+    radial-gradient(40rem 34rem at 50% 100%, rgba(251, 191, 36, 0.08), transparent 60%),
+    #f7f7f4;
+}
+
+/* ─── Text fx (gsapFx.js) ────────────────────────────────── */
+
+/* Elements using ScrambleText/ScanText/RevealText render at opacity:0 until
+   the effect JS takes over — avoids a flash of plain unstyled text. */
+.fx-hidden {
+  opacity: 0;
+}
+
+/* Magnetic.jsx — invisible pull-zone wrapper, sized to content */
+.mag-zone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fx-scan {
+  --scan-x: 0%;
+  background-image: linear-gradient(
+    90deg,
+    var(--scan-color, #111) 0%,
+    var(--scan-color, #111) calc(var(--scan-x) - 6%),
+    #fff calc(var(--scan-x)),
+    rgba(140, 140, 140, 0.4) calc(var(--scan-x) + 6%),
+    rgba(140, 140, 140, 0.4) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}

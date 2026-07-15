@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import '../pages.css';
 import './Contact.css';
+import { ScrambleText, ScanText, RevealText } from '../components/fx';
+import BookingCalendar from '../components/BookingCalendar';
+import PageBackground from '../components/PageBackground';
 
 const METHODS = [
   {
@@ -112,12 +115,26 @@ export default function Contact() {
 
   return (
     <div className="page-wrapper">
-      <div className="page-hero fade-up">
-        <p className="page-tag"><span className="page-tag-dot" /> Let's talk</p>
-        <h1 className="page-title">Get in <span>Touch</span></h1>
-        <p className="page-subtitle">
-          Open to collaborations, internships, and exciting projects. Drop me a message and I'll get back to you soon.
+      <PageBackground variant="radar" />
+      <div className="page-hero">
+        <p className="page-tag">
+          <span className="page-tag-dot" />
+          <ScrambleText as="span" trigger="mount" delay={0.1}>Let's talk</ScrambleText>
         </p>
+        <h1 className="page-title">
+          <ScanText as="span" trigger="mount" delay={0.3} color="#111">Get in</ScanText>{' '}
+          <ScanText as="span" trigger="mount" delay={0.5} color="#aaa">Touch</ScanText>
+        </h1>
+        <RevealText as="p" className="page-subtitle" trigger="mount" delay={0.7}>
+          Open to collaborations, internships, and exciting projects. Book a call below, or drop me a message and I'll get back to you soon.
+        </RevealText>
+      </div>
+
+      <div className="page-section">
+        <div className="fade-up fade-up-1 booking-section">
+          <p className="about-section-label">Book a call</p>
+          <BookingCalendar />
+        </div>
       </div>
 
       <div className="page-section">

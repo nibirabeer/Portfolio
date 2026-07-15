@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../pages.css';
 import './About.css';
+import { ScrambleText, ScanText, RevealText } from '../components/fx';
+import PageBackground from '../components/PageBackground';
 
 const TIMELINE = [
   {
@@ -43,12 +45,19 @@ const INTERESTS = [
 export default function About() {
   return (
     <div className="page-wrapper">
-      <div className="page-hero fade-up">
-        <p className="page-tag"><span className="page-tag-dot" /> The person behind the code</p>
-        <h1 className="page-title">About <span>Me</span></h1>
-        <p className="page-subtitle">
-          Computer Science graduate, builder, and design-obsessed developer based in the UK.
+      <PageBackground variant="waves" />
+      <div className="page-hero">
+        <p className="page-tag">
+          <span className="page-tag-dot" />
+          <ScrambleText as="span" trigger="mount" delay={0.1}>The person behind the code</ScrambleText>
         </p>
+        <h1 className="page-title">
+          <ScanText as="span" trigger="mount" delay={0.3} color="#111">About</ScanText>{' '}
+          <ScanText as="span" trigger="mount" delay={0.5} color="#aaa">Me</ScanText>
+        </h1>
+        <RevealText as="p" className="page-subtitle" trigger="mount" delay={0.7}>
+          Computer Science graduate, builder, and design-obsessed developer based in the UK.
+        </RevealText>
       </div>
 
       <div className="page-section">

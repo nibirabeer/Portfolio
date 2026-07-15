@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Homesections.css';
+import './HomeSections.css';
+import { ScrambleText, ScanText, RevealText } from '../fx';
 
-// ── 1. SKILLS DATA ───────────────────────────────────────────
+// ── 1. SKILLS DATA — trimmed to fit a single pinned panel ─────
 const SKILL_ROWS = [
-  { name: 'React',                icon: 'Re', level: 90, color: '#111' },
-  { name: 'JavaScript',           icon: 'JS', level: 85, color: '#111' },
-  { name: 'Java',                 icon: 'Jv', level: 80, color: '#111' },
-  { name: 'Firebase',             icon: 'Fb', level: 85, color: '#111' },
-  { name: 'SQL & Databases',      icon: 'DB', level: 80, color: '#111' },
-  { name: 'Information Security', icon: 'Se', level: 78, color: '#111' },
-  { name: 'Node.js',              icon: 'Nd', level: 72, color: '#111' },
-  { name: 'Distributed Systems',  icon: 'DS', level: 72, color: '#111' },
+  { name: 'React',           icon: 'Re', level: 90 },
+  { name: 'JavaScript',      icon: 'JS', level: 85 },
+  { name: 'Java',            icon: 'Jv', level: 80 },
+  { name: 'Firebase',        icon: 'Fb', level: 85 },
+  { name: 'SQL & Databases', icon: 'DB', level: 80 },
+  { name: 'Node.js',         icon: 'Nd', level: 72 },
 ];
 
 // ── 2. STATS DATA ────────────────────────────────────────────
@@ -55,7 +54,7 @@ function Counter({ target, suffix, active }) {
 }
 
 // ════════════════════════════════════════════════════════════
-// SECTION 1 — SKILLS
+// PANEL 1 — SKILLS (dark)
 // ════════════════════════════════════════════════════════════
 function SkillsSection() {
   const [ref, visible] = useVisible(0.1);
@@ -64,19 +63,22 @@ function SkillsSection() {
     <section className="hs-section hs-skills" ref={ref}>
       <div className="hs-inner">
 
-        <div className={`hs-label ${visible ? 'hs-in' : ''}`}>
-          <span className="hs-label-dot" />
-          What I work with
+        <div className="hs-label hs-label--light">
+          <span className="hs-label-dot hs-label-dot--light" />
+          <ScrambleText as="span">What I work with</ScrambleText>
         </div>
 
         <div className="hs-skills-layout">
-          <div className={`hs-skills-left ${visible ? 'hs-in' : ''}`} style={{ transitionDelay: '0.05s' }}>
-            <h2 className="hs-title">Skills &amp;<br /><span>Tech Stack</span></h2>
-            <p className="hs-body">
+          <div className="hs-skills-left">
+            <h2 className="hs-title hs-title--light">
+              <ScanText as="span" color="#fff">Skills &amp;</ScanText><br />
+              <ScanText as="span" color="rgba(255,255,255,0.3)" delay={0.15}>Tech Stack</ScanText>
+            </h2>
+            <RevealText as="p" className="hs-body hs-body--light" delay={0.3}>
               Technologies picked up through three years of BSc Computer Science,
               personal projects, and hands-on building.
-            </p>
-            <Link to="/skills" className="hs-cta">
+            </RevealText>
+            <Link to="/skills" className="hs-cta hs-cta--white">
               Full skill breakdown ↗
             </Link>
           </div>
@@ -98,7 +100,6 @@ function SkillsSection() {
                     className="hs-skill-fill"
                     style={{
                       width: visible ? `${s.level}%` : '0%',
-                      background: '#111',
                       transitionDelay: `${0.15 + i * 0.06}s`,
                     }}
                   />
@@ -114,7 +115,7 @@ function SkillsSection() {
 }
 
 // ════════════════════════════════════════════════════════════
-// SECTION 2 — ABOUT
+// PANEL 2 — ABOUT (light)
 // ════════════════════════════════════════════════════════════
 function AboutSection() {
   const [ref, visible] = useVisible(0.1);
@@ -123,9 +124,9 @@ function AboutSection() {
     <section className="hs-section hs-about" ref={ref}>
       <div className="hs-inner">
 
-        <div className={`hs-label ${visible ? 'hs-in' : ''}`}>
+        <div className="hs-label">
           <span className="hs-label-dot" />
-          The person behind the code
+          <ScrambleText as="span">The person behind the code</ScrambleText>
         </div>
 
         <div className="hs-about-layout">
@@ -160,21 +161,39 @@ function AboutSection() {
           <div className="hs-about-highlights">
             {[
               {
-                icon: '◈',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="13.6" y="2.9" width="4.2" height="7.4" rx="1.1" transform="rotate(45 15.7 6.6)" stroke="currentColor" strokeWidth="1.6" />
+                    <path d="M13 9L5.4 16.6a1.6 1.6 0 000 2.26l.74.74a1.6 1.6 0 002.26 0L16 11.9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ),
                 title: 'Builder',
-                body: 'From AI finance apps to Java games — I build things that solve real problems and look great doing it.',
+                body: 'From AI finance apps to Java games — I build things that solve real problems.',
                 delay: '0.1s',
               },
               {
-                icon: '◉',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4L2 9l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                    <path d="M6 11v4.5c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    <path d="M20 9v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  </svg>
+                ),
                 title: 'Learner',
-                body: 'Constantly exploring new patterns and technologies. Currently focused on distributed systems, cloud architecture, and AI integration.',
+                body: 'Constantly exploring distributed systems, cloud architecture, and AI integration.',
                 delay: '0.18s',
               },
               {
-                icon: '◇',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="8.3" cy="7.6" r="2.7" stroke="currentColor" strokeWidth="1.6" />
+                    <path d="M3.2 19c0-3 2.4-5 5.1-5s5.1 2 5.1 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    <circle cx="16.3" cy="8.6" r="2.2" stroke="currentColor" strokeWidth="1.6" />
+                    <path d="M14.9 12.3c2.7.35 4.3 2.1 4.3 4.7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                  </svg>
+                ),
                 title: 'Collaborator',
-                body: 'Experienced in Agile environments, sprint planning, and team delivery. Open to full-time roles and freelance projects.',
+                body: 'Experienced in Agile environments — open to full-time roles and freelance work.',
                 delay: '0.26s',
               },
             ].map(h => (
@@ -199,7 +218,7 @@ function AboutSection() {
 }
 
 // ════════════════════════════════════════════════════════════
-// SECTION 3 — STATS
+// PANEL 3 — STATS (dark)
 // ════════════════════════════════════════════════════════════
 function StatsSection() {
   const [ref, visible] = useVisible(0.15);
@@ -208,13 +227,14 @@ function StatsSection() {
     <section className="hs-section hs-stats" ref={ref}>
       <div className="hs-inner">
 
-        <div className={`hs-label hs-label--light ${visible ? 'hs-in' : ''}`}>
+        <div className="hs-label hs-label--light">
           <span className="hs-label-dot hs-label-dot--light" />
-          By the numbers
+          <ScrambleText as="span">By the numbers</ScrambleText>
         </div>
 
-        <h2 className={`hs-title hs-title--light ${visible ? 'hs-in' : ''}`} style={{ transitionDelay: '0.05s' }}>
-          A few things<br /><span>I'm proud of</span>
+        <h2 className="hs-title hs-title--light">
+          <ScanText as="span" color="#fff">A few things</ScanText><br />
+          <ScanText as="span" color="rgba(255,255,255,0.3)" delay={0.15}>I'm proud of</ScanText>
         </h2>
 
         <div className="hs-stats-grid">
@@ -248,10 +268,10 @@ function StatsSection() {
 
 export default function HomeSections() {
   return (
-    <>
+    <div className="hs-stack">
       <SkillsSection />
       <AboutSection />
       <StatsSection />
-    </>
+    </div>
   );
 }

@@ -1,27 +1,45 @@
 /* ═══════════════════════════════════════════════════════════
-   SHARED
+   SHARED — sticky stacking panels
+   Each .hs-section is height:100vh + position:sticky, so as you
+   scroll, each panel pins in place until the next one (with a
+   higher z-index) slides up and fully covers it — a looping deck
+   of full-screen panels rather than a normal scroll.
 ═══════════════════════════════════════════════════════════ */
+
+.hs-stack {
+  position: relative;
+}
 
 .hs-section {
   width: 100%;
-  padding: 88px 0;
-  overflow: hidden;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  scrollbar-width: none; /* firefox */
 }
+
+.hs-section::-webkit-scrollbar { display: none; }
+
+.hs-skills { background: #111; z-index: 1; }
+.hs-about  { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 2; }
+.hs-stats  { background: #111; z-index: 3; }
 
 .hs-inner {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 100px 32px 48px;
 }
 
-/* Fade-up entry */
-.hs-label,
-.hs-skills-left,
+/* Fade-up entry — .hs-label and .hs-title animate themselves via the fx
+   components (ScrambleText/ScanText) instead, so they're excluded here. */
 .hs-skills-right .hs-skill-row,
 .hs-about-card,
 .hs-highlight-card,
 .hs-stat-card,
-.hs-title,
 .hs-stats-cta-row {
   opacity: 0;
   transform: translateY(20px);
@@ -40,11 +58,11 @@
   gap: 8px;
   font-size: 11px;
   font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   letter-spacing: 1.3px;
   text-transform: uppercase;
-  color: #999;
-  margin-bottom: 32px;
+  color: #111;
+  margin-bottom: 28px;
 }
 
 .hs-label--light { color: rgba(255,255,255,0.4); }
@@ -61,13 +79,13 @@
 
 /* Title */
 .hs-title {
-  font-family: 'Saira Condensed', sans-serif;
-  font-size: clamp(38px, 5.5vw, 72px);
+  font-family: 'Hedvig Letters Serif', serif;
+  font-size: clamp(34px, 5vw, 64px);
   font-weight: 700;
   color: #111;
   line-height: 0.95;
   letter-spacing: -1.5px;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
 }
 
 .hs-title span       { color: #ccc; }
@@ -77,21 +95,24 @@
 /* Body text */
 .hs-body {
   font-size: 14.5px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #666;
   line-height: 1.7;
   max-width: 360px;
-  margin: 0 0 28px;
+  margin: 0 0 26px;
 }
+
+.hs-body--light { color: rgba(255,255,255,0.5); }
 
 /* CTA buttons */
 .hs-cta {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 6px;
   font-size: 13.5px;
   font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 10px;
@@ -111,27 +132,17 @@
 .hs-cta--outline:hover  { background: rgba(255,255,255,0.07); color: #fff; border-color: rgba(255,255,255,0.35); }
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 1 — SKILLS
+   PANEL 1 — SKILLS (dark)
 ═══════════════════════════════════════════════════════════ */
-
-.hs-skills {
-  background: #f5f5f3;
-  border-top: 1px solid rgba(0,0,0,0.06);
-}
 
 .hs-skills-layout {
   display: grid;
   grid-template-columns: 1fr 1.6fr;
-  gap: 60px;
-  align-items: start;
+  gap: 48px;
+  align-items: center;
 }
 
-.hs-skills-left {
-  position: sticky;
-  top: 120px;
-}
-
-.hs-skill-row { margin-bottom: 16px; }
+.hs-skill-row { margin-bottom: 14px; }
 
 .hs-skill-meta {
   display: flex;
@@ -143,8 +154,8 @@
 .hs-skill-icon {
   font-size: 11px;
   font-weight: 700;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #888;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: rgba(255,255,255,0.4);
   width: 24px;
   text-align: center;
   flex-shrink: 0;
@@ -154,40 +165,36 @@
 .hs-skill-name {
   font-size: 13.5px;
   font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #222;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: rgba(255,255,255,0.85);
   flex: 1;
 }
 
 .hs-skill-pct {
   font-size: 12px;
   font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #bbb;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: rgba(255,255,255,0.35);
 }
 
 .hs-skill-track {
   height: 4px;
-  background: rgba(0,0,0,0.07);
+  background: rgba(255,255,255,0.12);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .hs-skill-fill {
   height: 100%;
+  background: #fff;
   border-radius: 999px;
   width: 0;
   transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 2 — ABOUT
+   PANEL 2 — ABOUT (light)
 ═══════════════════════════════════════════════════════════ */
-
-.hs-about {
-  background: #fff;
-  border-top: 1px solid rgba(0,0,0,0.06);
-}
 
 .hs-about-layout {
   display: grid;
@@ -197,26 +204,29 @@
 }
 
 .hs-about-card {
-  background: #f5f5f3;
-  border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 16px;
-  padding: 28px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 26px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 11px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--glass-sheen);
 }
 
 .hs-about-avatar {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   background: #111;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Saira Condensed', sans-serif;
-  font-size: 16px;
+  font-family: 'Hedvig Letters Serif', serif;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -233,7 +243,7 @@
   gap: 6px;
   font-size: 11.5px;
   font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #15803d;
   background: #dcfce7;
   border: 1px solid #bbf7d0;
@@ -256,13 +266,13 @@
 
 .hs-about-loc {
   font-size: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #999;
 }
 
 .hs-about-name {
-  font-family: 'Saira Condensed', sans-serif;
-  font-size: 26px;
+  font-family: 'Hedvig Letters Serif', serif;
+  font-size: 24px;
   font-weight: 700;
   color: #111;
   margin: 0;
@@ -271,16 +281,16 @@
 
 .hs-about-role {
   font-size: 12.5px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #999;
-  margin: -6px 0 0;
+  margin: -4px 0 0;
 }
 
 .hs-about-bio {
   font-size: 13.5px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #555;
-  line-height: 1.7;
+  line-height: 1.65;
   margin: 0;
 }
 
@@ -293,7 +303,7 @@
 .hs-chip {
   font-size: 11.5px;
   font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #555;
   background: #fff;
   border: 1px solid rgba(0,0,0,0.09);
@@ -304,29 +314,32 @@
 .hs-about-highlights {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 11px;
 }
 
 .hs-highlight-card {
-  background: #f5f5f3;
-  border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 14px;
-  padding: 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  padding: 18px;
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  transition: box-shadow 0.2s, transform 0.2s;
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  box-shadow: var(--glass-sheen);
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
 }
 
 .hs-highlight-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+  background: var(--glass-bg-strong);
+  box-shadow: var(--glass-shadow-hover), var(--glass-sheen);
   transform: translateX(3px);
 }
 
 .hs-highlight-icon {
-  font-size: 16px;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 9px;
   background: #111;
   color: #fff;
@@ -336,53 +349,59 @@
   flex-shrink: 0;
 }
 
+.hs-highlight-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
 .hs-highlight-title {
-  font-family: 'Saira Condensed', sans-serif;
-  font-size: 18px;
+  font-family: 'Hedvig Letters Serif', serif;
+  font-size: 17px;
   font-weight: 700;
   color: #111;
-  margin: 0 0 4px;
+  margin: 0 0 3px;
 }
 
 .hs-highlight-body {
-  font-size: 13px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12.5px;
+  font-family: "Hanken Grotesk", sans-serif;
   color: #666;
-  line-height: 1.6;
+  line-height: 1.55;
   margin: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 3 — STATS
+   PANEL 3 — STATS (dark)
 ═══════════════════════════════════════════════════════════ */
-
-.hs-stats { background: #111; }
 
 .hs-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin: 48px 0 44px;
+  margin: 40px 0 36px;
 }
 
 .hs-stat-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 14px;
-  padding: 28px 16px;
+  background: var(--glass-dark-bg);
+  border: 1px solid var(--glass-dark-border);
+  border-radius: var(--r-md);
+  padding: 26px 16px;
   text-align: center;
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  box-shadow: var(--glass-dark-sheen);
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .hs-stat-card:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.14);
+  background: var(--glass-dark-bg-strong);
+  border-color: rgba(255,255,255,0.2);
   transform: translateY(-3px);
 }
 
 .hs-stat-value {
-  font-family: 'Saira Condensed', sans-serif;
-  font-size: clamp(36px, 4.5vw, 54px);
+  font-family: 'Hedvig Letters Serif', serif;
+  font-size: clamp(32px, 4vw, 48px);
   font-weight: 700;
   color: #fff;
   margin: 0 0 8px;
@@ -393,7 +412,7 @@
 .hs-stat-label {
   font-size: 11.5px;
   font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   color: rgba(255,255,255,0.38);
   margin: 0;
   letter-spacing: 0.2px;
@@ -410,12 +429,12 @@
 ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  .hs-inner            { padding: 0 24px; }
-  .hs-skills-layout    { grid-template-columns: 1fr; gap: 36px; }
-  .hs-skills-left      { position: static; }
+  .hs-inner            { padding: 90px 24px 32px; }
+  .hs-skills-layout    { grid-template-columns: 1fr; gap: 28px; }
   .hs-body             { max-width: 100%; }
   .hs-about-layout     { grid-template-columns: 1fr; }
   .hs-stats-grid       { grid-template-columns: repeat(2, 1fr); }
+  .hs-section          { align-items: flex-start; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -423,21 +442,20 @@
 ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 600px) {
-  .hs-section          { padding: 60px 0; }
-  .hs-inner            { padding: 0 18px; }
-  .hs-label            { margin-bottom: 24px; }
-  .hs-title            { letter-spacing: -1px; margin-bottom: 14px; }
-  .hs-body             { font-size: 14px; margin-bottom: 20px; }
+  .hs-inner            { padding: 84px 18px 28px; }
+  .hs-label            { margin-bottom: 20px; }
+  .hs-title            { letter-spacing: -1px; margin-bottom: 12px; }
+  .hs-body             { font-size: 14px; margin-bottom: 18px; }
 
-  .hs-skills-layout    { gap: 28px; }
+  .hs-skills-layout    { gap: 22px; }
   .hs-about-layout     { gap: 14px; }
-  .hs-about-card       { padding: 22px; }
+  .hs-about-card       { padding: 20px; }
 
-  .hs-stats-grid       { grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 36px 0 32px; }
-  .hs-stat-card        { padding: 22px 12px; }
-  .hs-stat-value       { font-size: 38px; }
+  .hs-stats-grid       { grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 30px 0 26px; }
+  .hs-stat-card        { padding: 20px 12px; }
+  .hs-stat-value       { font-size: 34px; }
   .hs-stat-label       { font-size: 11px; }
 
   .hs-stats-cta-row    { flex-direction: column; }
-  .hs-cta              { justify-content: center; width: 100%; }
+  .hs-stats-cta-row .hs-cta { justify-content: center; width: 100%; }
 }

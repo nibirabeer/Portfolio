@@ -1,0 +1,641 @@
+.booking-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-xl);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--glass-sheen);
+  overflow: hidden;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: 244px 1fr 200px;
+}
+
+.booking-panel {
+  padding: 26px 24px;
+  border-right: 1px solid var(--glass-border);
+}
+
+.booking-slots { border-right: none; }
+
+/* ─── Profile panel ──────────────────────────────────────── */
+.booking-avatar-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 14px;
+}
+
+.booking-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 17px;
+  font-weight: 700;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px var(--glass-border);
+}
+
+.booking-avatar-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2.5px solid #fff;
+}
+
+.booking-name {
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 2px;
+}
+
+.booking-role {
+  font-size: 12px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #888;
+  margin: 0 0 14px;
+}
+
+.booking-blurb {
+  font-size: 12.5px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.booking-blurb strong {
+  color: #111;
+  font-weight: 600;
+}
+
+.booking-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #666;
+}
+
+.booking-meta-row svg { flex-shrink: 0; color: #999; }
+
+/* Dashed divider before the interactive pickers */
+.booking-profile-divider {
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
+  margin: 0 0 16px;
+}
+
+/* ─── Duration / call-type / platform pickers ────────────────────────── */
+.booking-picker-group { margin-bottom: 16px; }
+
+.booking-picker-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0 0 8px;
+}
+
+.booking-segmented {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+/* Sliding background — GSAP animates its xPercent between segments instead
+   of hard-swapping each button's own background color. */
+.booking-segment-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
+  background: #111;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  z-index: 0;
+  will-change: transform;
+}
+
+.booking-segment-btn {
+  position: relative;
+  z-index: 1;
+  padding: 8px 4px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #666;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.25s;
+}
+
+.booking-segment-btn:hover:not(.is-active) { color: #111; }
+
+.booking-segment-btn.is-active { color: #fff; }
+
+/* Icon-only platform segments — the sliding indicator alone communicates
+   which is active, so no label needed in the button itself. */
+.booking-segment-btn--platform {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  overflow: visible;
+}
+
+.booking-segment-btn--platform svg { display: block; flex-shrink: 0; }
+
+/* Hover/focus tooltip naming the platform, since the button itself is
+   icon-only now. */
+.booking-platform-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 4px);
+  margin-bottom: 8px;
+  background: #111;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 2;
+}
+
+.booking-platform-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #111;
+}
+
+.booking-segment-btn--platform:hover .booking-platform-tooltip,
+.booking-segment-btn--platform:focus-visible .booking-platform-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ─── Duration slider ────────────────────────────────────────────────── */
+.booking-duration-slider {
+  position: relative;
+  padding-top: 22px;
+}
+
+.booking-duration-bubble {
+  position: absolute;
+  top: 0;
+  left: 0%;
+  transform: translateX(-50%);
+  opacity: 0;
+  background: #111;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  font-family: "Hanken Grotesk", sans-serif;
+  padding: 3px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.booking-duration-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #111;
+}
+
+.booking-duration-track-wrap {
+  position: relative;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.booking-duration-track-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.booking-duration-track-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 5px;
+  width: 0%;
+  border-radius: 999px;
+  background: #111;
+}
+
+.booking-duration-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #111;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px var(--glass-border), 0 2px 6px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.booking-duration-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.booking-duration-endlabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #bbb;
+}
+
+.booking-phone-input {
+  width: 100%;
+  font-size: 12.5px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #111;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-sm);
+  padding: 9px 11px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.booking-phone-input::placeholder { color: #aaa; }
+
+.booking-phone-input:focus {
+  border-color: rgba(17, 17, 17, 0.3);
+  background: #fff;
+}
+
+/* ─── Timezone select ─────────────────────────────────────────────────── */
+.booking-tz-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.booking-tz-select-wrap:focus-within {
+  border-color: rgba(17, 17, 17, 0.3);
+  background: #fff;
+}
+
+.booking-tz-icon { flex-shrink: 0; color: #999; }
+
+.booking-tz-select {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #333;
+  padding: 9px 6px;
+  cursor: pointer;
+}
+
+.booking-tz-chevron { flex-shrink: 0; color: #999; }
+
+/* ─── Calendar panel ─────────────────────────────────────── */
+.booking-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.booking-cal-month {
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.booking-cal-nav { display: flex; gap: 6px; }
+
+.booking-cal-nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.5);
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.booking-cal-nav-btn:hover:not(:disabled) { background: #111; color: #fff; }
+.booking-cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.booking-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+
+.booking-cal-weekdays span {
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #aaa;
+  text-align: center;
+}
+
+.booking-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.booking-cal-day {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-family: "Hanken Grotesk", sans-serif;
+  background: transparent;
+  color: #ccc;
+  cursor: default;
+}
+
+.booking-cal-day-dot {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.booking-cal-day.is-selected .booking-cal-day-dot { background: #fff; opacity: 0.9; }
+
+.booking-cal-day--empty { visibility: hidden; }
+
+.booking-cal-day.is-available {
+  background: rgba(0, 0, 0, 0.04);
+  color: #333;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+.booking-cal-day.is-available:hover {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  transform: translateY(-1px);
+}
+
+.booking-cal-day.is-today:not(.is-selected) {
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.25);
+}
+
+.booking-cal-day.is-selected {
+  background: #111;
+  color: #fff;
+  font-weight: 700;
+}
+
+.booking-cal-day.is-disabled {
+  color: #ddd;
+  cursor: not-allowed;
+}
+
+/* ─── Time slots panel ───────────────────────────────────── */
+.booking-slots-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.booking-slots-title {
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.booking-hour-toggle {
+  display: flex;
+  flex-shrink: 0;
+  border: 1px solid var(--glass-border);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.booking-hour-toggle button {
+  padding: 3px 7px;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.booking-hour-toggle button.is-active {
+  background: #111;
+  color: #fff;
+}
+
+.booking-slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.booking-slots-empty {
+  font-size: 12px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #999;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.booking-slot {
+  padding: 9px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #333;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.booking-slot:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: #fff;
+}
+
+.booking-slot.is-selected {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+
+/* ─── Footer form ────────────────────────────────────────── */
+.booking-divider {
+  height: 1px;
+  background: var(--glass-border);
+}
+
+.booking-form {
+  padding: 24px 26px 28px;
+}
+
+.booking-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 28px;
+  gap: 10px;
+}
+
+.booking-success-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.booking-success h3 {
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.booking-success p {
+  font-size: 13.5px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #666;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .booking-grid { grid-template-columns: 1fr; }
+  .booking-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .booking-slots { border-bottom: none; }
+  .booking-slots-list {
+    max-height: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+  .booking-profile { display: flex; flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .booking-panel { padding: 20px; }
+  .booking-form  { padding: 20px; }
+  .booking-cal-day { font-size: 11.5px; }
+}

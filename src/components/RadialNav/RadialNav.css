@@ -1,0 +1,147 @@
+/* ─── Floating radial nav — replaces the top bar once scrolled past the
+   hero. A single full-viewport layer (so the invisible backdrop can catch
+   outside clicks). The FAB itself is pinned to a fixed spot at the right
+   edge (see .radial-fab/.radial-item below) — it no longer tracks scroll
+   position, it just pops/slides in from the right when it first appears. ─ */
+.radial-nav {
+  --radial-accent: #22c55e;
+  --radial-accent-deep: #15803d;
+  position: fixed;
+  inset: 0;
+  z-index: 1600;
+  pointer-events: none;
+  transform-origin: calc(100% - 52px) bottom;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(40px) scale(0.4) rotate(-90deg);
+}
+
+.radial-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+/* ─── FAB ────────────────────────────────────────────────────────────── */
+.radial-fab {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow-hover), var(--glass-sheen);
+  color: #111;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 2;
+  transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+}
+
+/* Diagonal glass sheen — the same "liquid glass" reflection used on the
+   featured-project cards, borrowed here for a more premium floating feel. */
+.radial-fab::before,
+.radial-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.18) 35%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.radial-fab:hover {
+  background: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 16px 36px rgba(24, 24, 32, 0.16), var(--glass-sheen);
+}
+
+.radial-fab:active {
+  transform: scale(0.94);
+}
+
+.radial-fab-icon {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+}
+
+.radial-fab-icon--close {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+/* ─── Satellite items ────────────────────────────────────────────────── */
+.radial-item {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  box-shadow: var(--glass-shadow), var(--glass-sheen);
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0) rotate(-45deg);
+  pointer-events: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.radial-item svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.radial-item:hover {
+  background: #fff;
+  color: #111;
+}
+
+.radial-item:active {
+  opacity: 0.7;
+}
+
+.radial-item--active {
+  background: #fff;
+  border-color: var(--radial-accent);
+  color: var(--radial-accent-deep);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.16), var(--glass-shadow), var(--glass-sheen);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .radial-nav  { transform-origin: calc(100% - 44px) bottom; }
+  .radial-fab  { bottom: 18px; right: 18px; width: 52px; height: 52px; }
+  .radial-fab-icon { top: 16px; left: 16px; }
+  .radial-item { bottom: 22px; right: 22px; width: 44px; height: 44px; }
+  .radial-item svg { width: 17px; height: 17px; }
+}

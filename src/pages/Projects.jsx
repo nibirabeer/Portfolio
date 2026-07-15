@@ -7,9 +7,12 @@ import {
   detectTag,
   detectStatus,
   getStack,
+  TAG_STYLE,
 } from '../hooks/useGitHub';
 import { VERCEL_LINKS, PRIVATE_PROJECTS } from '../config/vercelLinks';
 import { PROJECT_STATUS } from '../config/projectStatus';
+import { ScrambleText, ScanText, RevealText } from '../components/fx';
+import PageBackground from '../components/PageBackground';
 
 function getVercelUrl(repoName) {
   const key = Object.keys(VERCEL_LINKS).find(
@@ -34,12 +37,6 @@ const STATUS_STYLE = {
   'Completed':   { bg: '#dcfce7', color: '#15803d' },
   'In Progress': { bg: '#fef9c3', color: '#854d0e' },
   'Archived':    { bg: '#f3f4f6', color: '#6b7280' },
-};
-
-const TAG_STYLE = {
-  'Web':  { bg: '#eff6ff', color: '#1d4ed8' },
-  'AI':   { bg: '#f5f3ff', color: '#7c3aed' },
-  'Game': { bg: '#fff7ed', color: '#c2410c' },
 };
 
 const GH_ICON = (
@@ -98,12 +95,19 @@ export default function Projects() {
 
   return (
     <div className="page-wrapper">
-      <div className="page-hero fade-up">
-        <p className="page-tag"><span className="page-tag-dot" /> Selected work</p>
-        <h1 className="page-title">My <span>Projects</span></h1>
-        <p className="page-subtitle">
-          Live from GitHub — every public repo I've built, updated automatically.
+      <PageBackground variant="grid" />
+      <div className="page-hero">
+        <p className="page-tag">
+          <span className="page-tag-dot" />
+          <ScrambleText as="span" trigger="mount" delay={0.1}>Selected work</ScrambleText>
         </p>
+        <h1 className="page-title">
+          <ScanText as="span" trigger="mount" delay={0.3} color="#111">My</ScanText>{' '}
+          <ScanText as="span" trigger="mount" delay={0.5} color="#aaa">Projects</ScanText>
+        </h1>
+        <RevealText as="p" className="page-subtitle" trigger="mount" delay={0.7}>
+          Live from GitHub — every public repo I've built, updated automatically.
+        </RevealText>
       </div>
 
       <div className="page-section">

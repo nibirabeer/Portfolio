@@ -1,0 +1,17 @@
+/* Sits behind a page's content, masking the global colourful ambient
+   gradient (body::before) with a flat near-white base plus a subtle
+   animated black/grey motif — z-index:-1 relative to .page-wrapper
+   (position:relative), same trick body::before uses relative to <body>. */
+.page-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #f9f9f7;
+}
+
+.page-bg-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

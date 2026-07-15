@@ -1,0 +1,242 @@
+/* ─── Wrap — full-viewport layer; visibility is entirely GSAP-driven
+   (see index.jsx), not CSS animations, since enter/exit share one
+   interruptible timeline instead of separate keyframes. Centering the
+   card is done here via flex, not a CSS transform — GSAP owns the card's
+   transform outright (x slide-in, y/rotation fall-out), so nothing can
+   fight over that property. ─────────────────────────────────────────── */
+.contact-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.contact-panel-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(240, 240, 240, 0.4);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* ─── Card ───────────────────────────────────────────────── */
+.contact-panel-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-xl);
+  padding: 30px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14), var(--glass-sheen);
+}
+
+.contact-panel-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.contact-panel-close:hover {
+  background: #f0f0f0;
+  color: #111;
+}
+
+.contact-panel-tag {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0 0 4px;
+}
+
+.contact-panel-title {
+  font-family: "Hedvig Letters Serif", serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.4px;
+  margin: 0 0 18px;
+}
+
+/* ─── Availability pill ──────────────────────────────────── */
+.contact-panel-availability {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12.5px;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  border-radius: var(--r-sm);
+  padding: 11px 14px;
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.contact-panel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: contact-panel-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes contact-panel-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* ─── Email ──────────────────────────────────────────────── */
+.contact-panel-email {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.18s, border-color 0.18s, transform 0.18s;
+  margin-bottom: 12px;
+}
+
+.contact-panel-email:hover {
+  background: #fff;
+  border-color: #111;
+  transform: translateY(-1px);
+}
+
+.contact-panel-email-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-sm);
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #333;
+}
+
+.contact-panel-email-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.contact-panel-email-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-panel-email-label {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.contact-panel-email-value {
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-panel-email-arrow {
+  color: #bbb;
+  flex-shrink: 0;
+  transition: color 0.15s, transform 0.15s;
+}
+
+.contact-panel-email:hover .contact-panel-email-arrow {
+  color: #111;
+  transform: translate(2px, -2px);
+}
+
+/* ─── Social links row ───────────────────────────────────── */
+.contact-panel-links {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.contact-panel-link {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: background 0.15s, transform 0.15s, border-color 0.15s;
+}
+
+.contact-panel-link svg {
+  width: 17px;
+  height: 17px;
+}
+
+.contact-panel-link:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+  transform: translateY(-1px);
+}
+
+/* ─── Full page CTA ──────────────────────────────────────── */
+.contact-panel-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #fff;
+  background: #111;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 10px;
+  transition: background 0.15s, transform 0.14s;
+}
+
+.contact-panel-cta:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .contact-panel-card { padding: 24px; border-radius: 20px; }
+  .contact-panel-title { font-size: 26px; }
+}
