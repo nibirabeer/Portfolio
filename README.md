@@ -1,42 +1,54 @@
-# React + Vite
+# Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+My personal portfolio — a React + Vite site built around a strict black/white/gray, editorial
+design language. GSAP drives the motion throughout — scroll reveals, a shuffling "riffle" project
+deck, full-screen wave-curtain page transitions, and a self-drawing logo preloader — while the
+Projects and Skills pages pull live from the GitHub API instead of hardcoded data, so they stay
+current automatically.
 
-Currently, two official plugins are available:
+**Live:** https://protfolio-ten-black.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# CIS051-2 - Web Technologies and Platforms - Assignment 2
+## Features
 
-## Overview
+- **Live GitHub data** — Projects and Skills are generated from the GitHub REST API (repos,
+  languages, commit recency), not static content, so they update themselves as new repos are pushed.
+- **GSAP-animated throughout** — scroll-triggered reveals, a draggable/click-to-shuffle project
+  deck with a staggered zigzag "riffle" animation, a DrawSVG-traced logo preloader, and a
+  MorphSVG wave-curtain transition on every page navigation.
+- **Monochrome glass design system** — black/white/gray palette with soft glassmorphism surfaces,
+  consistent across every page.
+- **Real contact flow** — a working contact form (Formspree) and booking calendar, no placeholders.
+- **Responsive** — tuned down to mobile, including the animated backgrounds and project deck.
 
-This repository contains the artefact submission for Assignment 2 of the CIS051-2 course, Web Technologies and Platforms, at the University of Bedfordshire.
+## Tech stack
 
-## Project Description
+- [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+- [React Router](https://reactrouter.com/) (hash routing)
+- [GSAP](https://gsap.com/) — Draggable, InertiaPlugin, MorphSVGPlugin, DrawSVGPlugin, ScrollTrigger
+- [Firebase](https://firebase.google.com/) — booking calendar backend
+- Deployed on [Vercel](https://vercel.com/)
 
-The project is a web application developed using React with Vite as the build tool. It serves as the artefact submission for Assignment 2 of the CIS051-2 course at the University of Bedfordshire. The application utilizes Firebase as the database for storing and retrieving data. Tailwind CSS is used for styling the user interface. The main objective of the project is to [briefly describe the main objective or purpose of the application].
+## Getting started
 
-## Technologies Used
-
-- **Programming Language**: JavaScript
-- **Frontend Framework/Library**: React.js
-- **Build Tool**: Vite
-- **Database**: Firebase
-- **CSS Framework**: Tailwind CSS
-
-## Installation
-
-To run this project locally, follow these steps:
-
-1. Clone the repository to your local machine:
-git clone https://github.com/nibirabeer/Pencraft.git
-
-2. Navigate to the project directory:
+```bash
+git clone https://github.com/nibirabeer/protfolio.git
+cd protfolio
 npm install
-
-4. Start the development server:
 npm run dev
-5. Open your web browser and navigate to (http://localhost:5173/Home) to view the application.
+```
 
-This project was developed by MD ABIDUR RAHMAN MRIDHA. You can find more of their work at (https://github.com/nibirabeer).
-For feedback or support regarding this project, please contact abirnibir10@gmail.com
+Then open http://localhost:5173.
+
+## Scripts
+
+| Command           | Description                        |
+| ------------------ | ----------------------------------- |
+| `npm run dev`      | Start the local dev server          |
+| `npm run build`     | Production build to `dist/`         |
+| `npm run preview`  | Preview the production build        |
+| `npm run lint`      | Lint the codebase                   |
+
+## Author
+
+Built by [Nibir Abeer](https://github.com/nibirabeer) — BSc (Hons) Computer Science, University of
+Bedfordshire. Get in touch: abirnibir10@gmail.com

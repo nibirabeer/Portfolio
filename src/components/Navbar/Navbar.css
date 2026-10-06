@@ -147,9 +147,9 @@
   font-size: 12px;
   font-family: "Hanken Grotesk", sans-serif;
   font-weight: 500;
-  color: #15803d;
-  background: #dcfce7;
-  border: 1px solid #bbf7d0;
+  color: #333;
+  background: rgba(23, 23, 23, 0.055);
+  border: 1px solid rgba(23, 23, 23, 0.1);
   padding: 5px 11px;
   border-radius: 999px;
   white-space: nowrap;
@@ -159,7 +159,7 @@
 .availability-dot {
   width: 7px;
   height: 7px;
-  background: #22c55e;
+  background: #171717;
   border-radius: 50%;
   flex-shrink: 0;
   animation: pulse-dot 2.2s ease-in-out infinite;
@@ -256,12 +256,14 @@
   overflow: hidden;
   z-index: 999;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
 }
 
 .mobile-menu--open {
   opacity: 1;
+  visibility: visible;
   pointer-events: all;
   transform: translateX(-50%) translateY(0);
 }
@@ -312,4 +314,13 @@
   .mobile-menu        { top: 68px; width: 94%; }
   .mobile-menu ul a,
   .mobile-menu ul button { font-size: 14px; padding: 11px 14px; }
+}
+
+@media (max-width: 360px) {
+  .navbar { gap: 8px; padding-inline: 10px; }
+  .navbar-logo { gap: 6px; }
+  .logo-mark { width: 30px; height: 30px; }
+  .navbar-name { font-size: 14px; }
+  .navbar-actions { gap: 6px; }
+  .btn-socials { padding-inline: 10px; }
 }

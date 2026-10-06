@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 
-const USERNAME  = 'nibirabeer';
-const CACHE_KEY = 'gh_repos_v3';        // bumped — now includes multipleCommits
-const CACHE_TTL = 5 * 60 * 1000;
+const USERNAME = 'nibirabeer';
+const CACHE_KEY = 'gh_repos_v4';
+const CACHE_TTL = 15 * 60 * 1000;
 
-function getCached() {
+function readCache() {
   try {
     const raw = sessionStorage.getItem(CACHE_KEY);
     if (!raw) return null;
-    const { data, ts } = JSON.parse(raw);
-    return Date.now() - ts < CACHE_TTL ? data : null;
+    const entry = JSON.parse(raw);
+    if (!Array.isArray(entry.data)) return null;
+    return entry;
   } catch { return null; }
 }
 
@@ -19,74 +20,75 @@ function putCache(data) {
   } catch {}
 }
 
-// Fetch whether a repo has more than 1 commit (per_page=2 is the cheapest check)
-async function fetchHasMultipleCommits(repoName) {
-  const key = `gh_mc_${repoName}`;
-  try {
-    const raw = sessionStorage.getItem(key);
-    if (raw) {
-      const { data, ts } = JSON.parse(raw);
-      if (Date.now() - ts < CACHE_TTL) return data;
-    }
-  } catch {}
+async function fetchAllRepos() {
+  const repos = [];
+  let url = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=pushed`;
 
-  try {
-    const res = await fetch(
-      `https://api.github.com/repos/${USERNAME}/${repoName}/commits?per_page=2`,
-      { headers: { Accept: 'application/vnd.github+json' } }
-    );
-    if (!res.ok) return true; // assume multiple on API error
-    const commits = await res.json();
-    const result  = Array.isArray(commits) && commits.length > 1;
-    sessionStorage.setItem(key, JSON.stringify({ data: result, ts: Date.now() }));
-    return result;
-  } catch {
-    return true; // assume multiple on network error
+  while (url) {
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
+
+    if (!response.ok) {
+      const rateLimitReached = response.status === 403 && response.headers.get('x-ratelimit-remaining') === '0';
+      throw new Error(rateLimitReached
+        ? 'GitHub rate limit reached. Please retry after it resets.'
+        : `GitHub could not return repositories (HTTP ${response.status}).`);
+    }
+
+    const page = await response.json();
+    if (!Array.isArray(page)) throw new Error('GitHub returned an unexpected repository response.');
+    repos.push(...page);
+    const next = response.headers.get('link')?.match(/<([^>]+)>;\s*rel="next"/);
+    url = next?.[1] || null;
   }
+
+  return repos.filter(repo => !repo.fork);
 }
 
 export function useGitHubRepos() {
-  const [repos,   setRepos]   = useState([]);
+  const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState(null);
+  const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    const cached = getCached();
-    if (cached) {
-      setRepos(cached);
+    let active = true;
+    const cached = readCache();
+    const hasCache = Boolean(cached?.data?.length);
+    const cacheIsFresh = cached && Date.now() - cached.ts < CACHE_TTL;
+
+    if (hasCache) setRepos(cached.data);
+    if (cacheIsFresh && retryCount === 0) {
       setLoading(false);
-      return;
+      setError(null);
+      return () => { active = false; };
     }
 
-    fetch(
-      `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=pushed`,
-      { headers: { Accept: 'application/vnd.github+json' } }
-    )
-      .then(r => {
-        if (!r.ok) throw new Error(`GitHub ${r.status}`);
-        return r.json();
+    setLoading(!hasCache);
+    setError(null);
+
+    fetchAllRepos()
+      .then(data => {
+        if (!active) return;
+        putCache(data);
+        setRepos(data);
       })
-      .then(async data => {
-        const filtered = data.filter(r => !r.fork);
-
-        // Fetch commit counts for all repos in parallel
-        const flags = await Promise.all(
-          filtered.map(r => fetchHasMultipleCommits(r.name))
-        );
-
-        const enriched = filtered.map((r, i) => ({
-          ...r,
-          multipleCommits: flags[i],
-        }));
-
-        putCache(enriched);
-        setRepos(enriched);
+      .catch(requestError => {
+        if (!active) return;
+        setError(requestError.message || 'GitHub is temporarily unavailable.');
       })
-      .catch(setError)
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => {
+        if (active) setLoading(false);
+      });
 
-  return { repos, loading, error };
+    return () => { active = false; };
+  }, [retryCount]);
+
+  return { repos, loading, error, retry: () => setRetryCount(count => count + 1) };
 }
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -119,16 +121,11 @@ export function detectTag(repo) {
   return 'Web';
 }
 
-// Status logic:
-//   archived                          → Archived
-//   only 1 commit                     → In Progress
-//   multiple commits + on Vercel      → Completed
-//   multiple commits but not Vercel   → In Progress
+// Deployment status comes from the archived flag and a live deployment link.
+// Avoid per-repository commit requests: they exhaust GitHub's anonymous API quota.
 export function detectStatus(repo, hasVercelUrl = false) {
-  if (repo.archived)           return 'Archived';
-  if (!repo.multipleCommits)   return 'In Progress';
-  if (hasVercelUrl)            return 'Completed';
-  return 'In Progress';
+  if (repo.archived) return 'Archived';
+  return hasVercelUrl ? 'Completed' : 'In Progress';
 }
 
 export function getStack(repo) {

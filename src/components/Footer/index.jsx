@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xzdyynog';
@@ -52,43 +52,10 @@ const SOCIAL_LINKS = [
 ];
 
 function Footer() {
-  const canvasRef = useRef(null);
-  const location = useLocation();
-  const isHome = location.pathname === '/';
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [hovered, setHovered] = useState(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animId;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize();
-    window.addEventListener('resize', resize);
-    const particles = Array.from({ length: 45 }, () => ({
-      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-      r: Math.random() * 1.6 + 0.4,
-      dx: (Math.random() - 0.5) * 0.3, dy: (Math.random() - 0.5) * 0.3,
-      o: Math.random() * 0.35 + 0.08,
-    }));
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(17,17,17,${p.o})`; ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-      });
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
-  }, []);
 
   const handleCapture = async (e) => {
     e.preventDefault();
@@ -120,7 +87,6 @@ function Footer() {
 
   return (
     <footer className="footer">
-      <canvas ref={canvasRef} className="footer-canvas" aria-hidden="true" />
       <div className="footer-inner">
 
         <div className="footer-grid">
@@ -134,15 +100,16 @@ function Footer() {
             </div>
 
             <div className="footer-capture">
-              <p className="footer-capture-label">Let's build something</p>
+              <label className="footer-capture-label" htmlFor="footer-email">Have a role or project in mind?</label>
               {sent ? (
                 <p className="footer-capture-sent">Thanks — I'll be in touch soon ✓</p>
               ) : (
                 <form className="footer-capture-form" onSubmit={handleCapture}>
                   <input
+                    id="footer-email"
                     type="email"
                     required
-                    placeholder="Enter your email"
+                    placeholder="Your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="footer-capture-input"
@@ -174,7 +141,7 @@ function Footer() {
                     aria-label={s.label} target="_blank" rel="noreferrer"
                     onMouseEnter={() => setHovered(s.label)} onMouseLeave={() => setHovered(null)}>
                     <span className="footer-social-icon">{s.icon}</span>
-                    <span className={`footer-social-label ${hovered === s.label ? 'visible' : ''}`}>{s.label}</span>
+                    <span className="footer-social-label">{s.label}</span>
                   </a>
                 ))}
               </div>
@@ -183,13 +150,6 @@ function Footer() {
         </div>
       </div>
 
-      {/* Big wordmark logo — closing flourish, landing page only */}
-      {isHome && (
-        <div className="footer-wordmark">
-          <img src="/footer-wordmark.png" alt="Nibir Abeer" className="footer-wordmark-img" />
-        </div>
-      )}
-
       <div className="footer-inner">
         <div className="footer-divider" />
 
@@ -197,9 +157,8 @@ function Footer() {
           <p className="footer-copy">© {new Date().getFullYear()} Nibir Abeer. All rights reserved.</p>
           <div className="footer-status">
             <span className="footer-dot" />
-            <span>Open to work — let's build something great</span>
+            <span>Open to developer opportunities</span>
           </div>
-          <p className="footer-made">Made with <span className="footer-heart">♥</span></p>
         </div>
       </div>
     </footer>

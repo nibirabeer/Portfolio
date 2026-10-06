@@ -1,312 +1,103 @@
-/* ═══════════════════════════════════════════════════════════
-   Featured work — draggable card slider (GSAP Draggable + InertiaPlugin).
-   Light glass theme, matching the rest of the site (var(--glass-*) tokens,
-   black/gray text) — only the accent color varies, and it's tied to the
-   same tag→color mapping the Projects page uses (see TAG_STYLE in
-   useGitHub.js), not an arbitrary palette. A center-focused size/opacity
-   hierarchy is recomputed every frame from each card's live distance to
-   the viewport's center; movement is user-driven only (drag or the arrow
-   buttons) — no autoplay.
-═══════════════════════════════════════════════════════════ */
-
 .stack-section {
+  --card-width: clamp(270px, 30vw, 316px);
+  position: relative;
   width: 100%;
-  padding: 96px 0;
-  background: rgba(255, 255, 255, 0.45);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding: clamp(76px, 9vw, 112px) 0 88px;
   overflow: hidden;
-  position: relative;
+  background: rgba(255,255,255,.58);
+  border-top: 1px solid rgba(17,17,17,.07);
 }
-
-.stack-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 32px;
+.stack-inner { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+.stack-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.stack-bg-grid { position: absolute; inset: 0; opacity: .56; background-image: linear-gradient(rgba(17,17,17,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(17,17,17,.045) 1px,transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 70% 65% at 50% 52%,#000 25%,transparent 88%); -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 52%,#000 25%,transparent 88%); }
+.stack-bg-orb { position: absolute; width: 390px; aspect-ratio: 1; border-radius: 50%; filter: blur(105px); opacity: .13; animation: stack-orb-drift 30s ease-in-out infinite alternate; }
+.stack-bg-orb--a { top: -250px; left: -120px; background: #737373; }
+.stack-bg-orb--b { right: -130px; bottom: -290px; background: #a3a3a3; animation-delay: -13s; }
+@keyframes stack-orb-drift { to { transform: translate3d(34px,28px,0) scale(1.08); } }
+.stack-topbar { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin: 0 32px 22px; }
+.stack-eyebrow { margin: 0 0 10px; color: #777; font: 600 10px/1.3 "Hanken Grotesk",sans-serif; letter-spacing: 1.35px; text-transform: uppercase; }
+.stack-heading { margin: 0; color: #171717; font: 700 clamp(32px,4vw,46px)/1 "Hedvig Letters Serif",Georgia,serif; letter-spacing: -1.4px; }
+.stack-heading span { color: #a8a8a8; }
+.stack-cta { display: inline-flex; align-items: center; gap: 12px; flex: 0 0 auto; padding: 11px 15px; border: 1px solid rgba(17,17,17,.13); border-radius: 999px; background: rgba(255,255,255,.65); color: #222; font: 600 12px/1 "Hanken Grotesk",sans-serif; text-decoration: none; transition: color 180ms ease,background 180ms ease,border-color 180ms ease,transform 180ms ease; }
+.stack-cta:hover { color: #fff; background: #171717; border-color: #171717; transform: translateY(-2px); }
+.slider-frame { position: relative; }
+.slider-viewport { position: relative; height: 460px; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; mask-image: linear-gradient(to right,transparent 0,#000 5%,#000 95%,transparent 100%); -webkit-mask-image: linear-gradient(to right,transparent 0,#000 5%,#000 95%,transparent 100%); }
+.slider-track { position: relative; width: 100%; height: 100%; }
+.slider-card { --tilt-x: 0deg; --tilt-y: 0deg; --light-x: 50%; --light-y: 50%; --depth-x: 0px; --depth-y: 0px; --card-offset: 0px; --card-scale: .78; --card-opacity: .64; --card-z: 2; position: absolute; z-index: var(--card-z); top: 50%; left: 50%; isolation: isolate; display: flex; width: var(--card-width); flex-direction: column; height: 416px; overflow: hidden; border: 1px solid rgba(17,17,17,.09); border-radius: 22px; background: #fff; opacity: var(--card-opacity); box-shadow: 0 14px 36px rgba(30,30,30,.07),0 2px 5px rgba(30,30,30,.035); transform: translate(calc(-50% + var(--card-offset)), -50%) scale(var(--card-scale)) perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)); transform-origin: center; transition: transform 520ms cubic-bezier(.2,.75,.25,1),box-shadow 360ms ease,border-color 360ms ease,opacity 360ms ease,visibility 360ms; will-change: transform,opacity; }
+.slider-card--active { --card-scale: 1; --card-opacity: 1; --card-z: 3; border-color: rgba(17,17,17,.2); box-shadow: 0 24px 58px rgba(30,30,30,.12),0 4px 12px rgba(30,30,30,.045); }
+.slider-card--previous,.slider-card--next { cursor: pointer; }
+.slider-card--hidden { --card-opacity: 0; --card-scale: .7; --card-z: 0; visibility: hidden; pointer-events: none; }
+.slider-card:hover,.slider-card--active:hover { box-shadow: 0 30px 64px rgba(30,30,30,.15),0 5px 14px rgba(30,30,30,.06); }
+@media (hover:hover) and (pointer:fine) { .slider-card:hover { --tilt-x: 1.6deg; --tilt-y: -2.2deg; } }
+.slider-card:active { filter: brightness(.98); }
+.slider-card:focus-within { outline: 2px solid #171717; outline-offset: 4px; }
+.slider-card-art { position: relative; height: 46%; flex: 0 0 46%; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at 77% 15%,color-mix(in srgb,var(--card-color) 13%,transparent),transparent 46%),linear-gradient(145deg,#f7f7f4 0%,#ecece9 52%,#f8f8f6 100%); }
+.slider-card-art::after { position: absolute; z-index: 2; inset: 0; content: ''; pointer-events: none; background: radial-gradient(ellipse at var(--light-x) var(--light-y),rgba(255,255,255,.8),transparent 58%); mix-blend-mode: soft-light; }
+.slider-card-art-grid { position: absolute; inset: 0; opacity: .4; background-image: linear-gradient(rgba(17,17,17,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(17,17,17,.055) 1px,transparent 1px); background-size: 26px 26px; transform: translate3d(calc(var(--depth-x)*-1),calc(var(--depth-y)*-1),0); transition: transform 220ms ease-out; }
+.slider-card-art-orb { position: absolute; display: block; border: 1px solid rgba(17,17,17,.15); border-radius: 50%; transform: translate3d(var(--depth-x),var(--depth-y),0); transition: transform 220ms ease-out; }
+.slider-card-art-orb--one { width: 178px; height: 178px; top: 22px; right: 35px; box-shadow: inset 0 0 0 18px rgba(17,17,17,.018),inset 0 0 0 42px rgba(17,17,17,.018); }
+.slider-card-art-orb--two { width: 116px; height: 116px; top: 52px; right: 66px; border-color: rgba(17,17,17,.1); }
+.slider-card-watermark { position: absolute; z-index: 1; right: 18px; bottom: -22px; color: rgba(17,17,17,.11); font: 700 132px/1 "Hanken Grotesk",sans-serif; letter-spacing: -11px; transform: translate3d(calc(var(--depth-x)*1.7),calc(var(--depth-y)*1.7),0); transition: transform 180ms ease-out; user-select: none; }
+.slider-card-index,.slider-card-tag { position: absolute; z-index: 3; top: 18px; color: #5f5f5f; font: 600 10px/1 "Hanken Grotesk",sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+.slider-card-index { left: 20px; }
+.slider-card-tag { right: 18px; padding: 6px 9px; border: 1px solid rgba(17,17,17,.1); border-radius: 999px; background: rgba(255,255,255,.62); color: var(--card-color); letter-spacing: .6px; }
+.slider-card-content { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; padding: 21px 22px 19px; transform: translate3d(var(--depth-x),var(--depth-y),0); transition: transform 200ms ease-out; }
+.slider-card-title { margin: 0 0 8px; color: #171717; font: 700 22px/1.08 "Hedvig Letters Serif",Georgia,serif; letter-spacing: -.45px; }
+.slider-card-desc { display: -webkit-box; overflow: hidden; margin: 0; color: #676767; font: 400 12.5px/1.55 "Hanken Grotesk",sans-serif; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.slider-card-stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 13px 0 0; }
+.slider-card-chip { padding: 4px 8px; border: 1px solid rgba(17,17,17,.06); border-radius: 999px; background: rgba(17,17,17,.045); color: #4b4b4b; font: 500 10.5px/1 "Hanken Grotesk",sans-serif; }
+.slider-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(17,17,17,.08); }
+.slider-card-meta { overflow: hidden; color: #8a8a8a; font: 500 10.5px/1.2 "Hanken Grotesk",sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.slider-card-link { display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; color: var(--card-color); font: 600 11.5px/1 "Hanken Grotesk",sans-serif; text-decoration: none; transition: gap 160ms ease; }
+.slider-card-link:hover { gap: 10px; }
+.slider-card-link:focus-visible,.stack-cta:focus-visible,.stack-nav:focus-visible { outline: 2px solid #171717; outline-offset: 4px; }
+.slider-controls { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; margin: 8px 32px 0; }
+.slider-count { display: inline-flex; align-items: center; gap: 9px; justify-self: start; color: #929292; font: 500 11px/1 "Hanken Grotesk",sans-serif; font-variant-numeric: tabular-nums; }
+.slider-count strong { color: #171717; font-size: 13px; font-weight: 700; }
+.slider-count-divider { width: 24px; height: 1px; background: rgba(17,17,17,.2); }
+.slider-control-buttons { display: flex; gap: 8px; }
+.stack-nav { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(17,17,17,.12); border-radius: 50%; background: rgba(255,255,255,.76); color: #171717; cursor: pointer; transition: color 180ms ease,background 180ms ease,border-color 180ms ease,transform 180ms ease,opacity 180ms ease; }
+.stack-nav svg { width: 18px; height: 18px; }
+.stack-nav:hover:not(:disabled) { transform: translateY(-2px); border-color: #171717; background: #171717; color: #fff; }
+.stack-nav:active:not(:disabled) { transform: scale(.96); }
+.stack-nav:disabled { opacity: .35; cursor: default; }
+.slider-hint { justify-self: end; color: #8a8a8a; font: 500 10.5px/1 "Hanken Grotesk",sans-serif; letter-spacing: .15px; }
+.stack-notice { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 32px 12px; color: #686868; font: 500 12px/1.5 "Hanken Grotesk",sans-serif; }
+.stack-notice button,.stack-notice a { padding: 0; border: 0; background: none; color: #171717; font: 600 12px/1.4 "Hanken Grotesk",sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.stack-empty { display: grid; min-height: 320px; place-items: center; padding: 32px; color: #686868; font: 500 14px/1.6 "Hanken Grotesk",sans-serif; text-align: center; }
+.slider-card--skeleton { padding: 20px; background: linear-gradient(150deg,#fff,#f4f4f1); }
+.slider-card--skeleton .skel { background: linear-gradient(90deg,#e9e9e6 25%,#f5f5f3 50%,#e9e9e6 75%); background-size: 200% 100%; animation: stack-shimmer 1.4s infinite; }
+@keyframes stack-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@media (max-width:700px) {
+  .stack-section { --card-width: min(316px,calc(100vw - 72px)); }
+  .stack-inner { padding: 0 20px; }
+  .stack-topbar { align-items: start; margin-inline: 4px; gap: 15px; }
+  .stack-heading { font-size: clamp(30px,7vw,40px); }
+  .stack-cta { gap: 8px; padding: 10px 12px; font-size: 11px; }
+  .slider-viewport { height: 426px; }
+  .slider-card { height: 390px; border-radius: 19px; }
+  .slider-controls { margin: 4px 4px 0; gap: 10px; }
+  .stack-notice { margin-inline: 4px; }
 }
-
-/* ─── Heading — deliberately not the site's usual serif: Orbitron's
-   geometric, tracked-out caps read as more "futuristic" for this one
-   accent moment. */
-.stack-heading {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 800;
-  font-size: clamp(26px, 3.6vw, 42px);
-  color: #111;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  line-height: 1.15;
-  margin: 0 0 20px;
+@media (max-width:440px) {
+  .stack-section { padding: 68px 0 64px; }
+  .stack-inner { padding: 0 16px; }
+  .stack-topbar { flex-direction: column; align-items: flex-start; margin-bottom: 12px; }
+  .stack-cta { align-self: flex-start; }
+  .slider-viewport { height: 414px; }
+  .slider-card-content { padding: 18px 18px 16px; }
+  .slider-card-title { font-size: 20px; }
+  .slider-card-art-orb--one { width: 154px; height: 154px; right: 26px; }
+  .slider-card-art-orb--two { width: 100px; height: 100px; right: 53px; }
+  .slider-card-watermark { font-size: 116px; }
+  .slider-controls { gap: 10px; }
+  .slider-hint { font-size: 9.5px; }
+  .stack-nav { width: 38px; height: 38px; }
 }
-
-/* ─── Top bar — heading + CTA sit on one row above the slider ───── */
-.stack-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 48px;
-}
-
-.stack-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13.5px;
-  font-weight: 600;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: #fff;
-  background: #111;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  transition: background 0.15s, transform 0.14s;
-}
-
-.stack-cta:hover {
-  background: #333;
-  transform: translateY(-1px);
-}
-
-/* ─── Slider viewport — clips the track, fades its own edges so cards
-   don't look abruptly cropped as they drag past the visible bounds ─── */
-.slider-viewport {
-  overflow: hidden;
-  padding: 40px 0;
-  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
-}
-
-.slider-track {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  width: max-content;
-  cursor: grab;
-  touch-action: pan-y;
-}
-
-.slider-track:active {
-  cursor: grabbing;
-}
-
-/* Apple "Liquid Glass" style card — a near-white translucent body, a
-   diagonal sheen highlight, and a soft ambient shadow, same as the rest of
-   the site's glass surfaces. Each card's scale/opacity/z-index are set
-   continuously from JS based on live distance to center (the hierarchy
-   effect); only the resting visual design lives here. --card-color (set
-   inline per project, from TAG_STYLE) tints the border, glow, tag, link
-   and watermark just enough to color-code by category without going neon. */
-.slider-card {
-  position: relative;
-  flex-shrink: 0;
-  width: 240px;
-  height: 360px;
-  display: flex;
-  flex-direction: column;
-  padding: 22px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.4);
-  border: 1.5px solid color-mix(in srgb, var(--card-color) 35%, rgba(255, 255, 255, 0.8));
-  backdrop-filter: blur(26px) saturate(190%) brightness(1.04);
-  -webkit-backdrop-filter: blur(26px) saturate(190%) brightness(1.04);
-  box-shadow:
-    0 24px 50px -14px rgba(0, 0, 0, 0.16),
-    inset 0 1px 1px rgba(255, 255, 255, 0.9),
-    0 0 26px -10px var(--card-color);
-  overflow: hidden;
-  user-select: none;
-}
-
-/* Diagonal sheen — a soft light reflection sweeping across the glass */
-.slider-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.15) 30%,
-    transparent 55%
-  );
-  pointer-events: none;
-}
-
-.slider-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.slider-card-index {
-  font-family: "Hanken Grotesk", sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #bbb;
-}
-
-.slider-card-tag {
-  font-size: 10.5px;
-  font-weight: 600;
-  font-family: "Hanken Grotesk", sans-serif;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--card-color);
-  background: color-mix(in srgb, var(--card-color) 12%, #fff);
-  border: 1px solid color-mix(in srgb, var(--card-color) 25%, transparent);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-/* Giant faded index numeral — an editorial watermark behind the content,
-   tinted with the card's own color instead of a neutral gray. */
-.slider-card-watermark {
-  position: absolute;
-  z-index: -1;
-  right: -4px;
-  bottom: 14px;
-  font-family: "Hanken Grotesk", sans-serif;
-  font-weight: 700;
-  font-size: 140px;
-  line-height: 1;
-  letter-spacing: -7px;
-  color: color-mix(in srgb, var(--card-color) 16%, transparent);
-  pointer-events: none;
-  user-select: none;
-}
-
-.slider-card-title {
-  font-family: "Hedvig Letters Serif", serif;
-  font-size: 21px;
-  font-weight: 700;
-  color: #111;
-  line-height: 1.1;
-  margin: 0 0 7px;
-}
-
-.slider-card-desc {
-  font-size: 12.5px;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: #666;
-  line-height: 1.5;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.slider-card-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 12px 0;
-}
-
-.slider-card-chip {
-  font-size: 10.5px;
-  font-weight: 500;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: #444;
-  background: rgba(0, 0, 0, 0.06);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-.slider-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  align-self: flex-start;
-  margin-top: auto;
-  font-size: 12.5px;
-  font-weight: 600;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: var(--card-color);
-  text-decoration: none;
-  transition: gap 0.15s;
-}
-
-.slider-card-link:hover {
-  gap: 9px;
-}
-
-.slider-card--skeleton {
-  padding: 22px;
-}
-
-.slider-card--skeleton .skel {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: stack-shimmer 1.4s infinite;
-}
-
-@keyframes stack-shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ─── Controls — prev/next sit centered below the slider ───── */
-.slider-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 32px;
-}
-
-.stack-nav {
-  flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur-soft);
-  -webkit-backdrop-filter: var(--glass-blur-soft);
-  box-shadow: var(--glass-shadow), var(--glass-sheen);
-  color: #111;
-  cursor: pointer;
-  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
-}
-
-.stack-nav svg {
-  width: 20px;
-  height: 20px;
-}
-
-.stack-nav:hover {
-  background: #fff;
-  transform: scale(1.08);
-  box-shadow: var(--glass-shadow-hover), var(--glass-sheen);
-}
-
-.stack-nav:active {
-  transform: scale(0.92);
-}
-
-.stack-nav:focus-visible {
-  outline: 2px solid #111;
-  outline-offset: 3px;
-}
-
-/* ─── Responsive ─────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .stack-heading { text-align: center; }
-  .stack-topbar { flex-direction: column; align-items: center; gap: 14px; margin-bottom: 36px; }
-}
-
-@media (max-width: 480px) {
-  .stack-section { padding: 64px 0; }
-  .stack-inner   { padding: 0 20px; }
-  .slider-viewport { padding: 24px 0; }
-  .slider-card   { width: 210px; height: 340px; padding: 18px; }
-  .slider-card-title { font-size: 19px; }
-  .slider-card-watermark { font-size: 110px; bottom: 10px; }
-  .stack-nav     { width: 40px; height: 40px; }
-  .stack-nav svg { width: 17px; height: 17px; }
+@media (prefers-reduced-motion:reduce) {
+  .stack-bg-orb { animation: none; }
+  .slider-viewport { scroll-behavior: auto; }
+  .slider-card,.slider-card-art-grid,.slider-card-art-orb,.slider-card-watermark,.slider-card-content,.stack-cta,.stack-nav,.slider-card-link { transition: none; }
+  .slider-card { transform: none; will-change: auto; }
+  .slider-card--skeleton .skel { animation: none; }
 }

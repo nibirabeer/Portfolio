@@ -34,12 +34,21 @@
   --r-md: 14px;
   --r-lg: 18px;
   --r-xl: 22px;
+  --page-bg: #f7f7f4;
+  --ink: #171717;
+  --muted: #686868;
+  --line: rgba(23, 23, 23, 0.1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body {
   font-family: "Hanken Grotesk", sans-serif;
   min-height: 100vh;
-  background: #f7f7f4;
+  background: var(--page-bg);
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ─── Ambient background — soft blurred colour behind the glass ───
@@ -51,10 +60,26 @@ body::before {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(38rem 30rem at 8% 8%,  rgba(34, 197, 94, 0.10), transparent 60%),
-    radial-gradient(34rem 28rem at 96% 18%, rgba(96, 165, 250, 0.10), transparent 60%),
-    radial-gradient(40rem 34rem at 50% 100%, rgba(251, 191, 36, 0.08), transparent 60%),
-    #f7f7f4;
+    radial-gradient(38rem 30rem at 8% 8%,  rgba(23, 23, 23, 0.035), transparent 60%),
+    radial-gradient(34rem 28rem at 96% 18%, rgba(115, 115, 115, 0.045), transparent 60%),
+    radial-gradient(40rem 34rem at 50% 100%, rgba(23, 23, 23, 0.025), transparent 60%),
+    var(--page-bg);
+}
+
+::selection { background: #171717; color: #fff; }
+
+:focus-visible {
+  outline: 2px solid #171717;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ─── Text fx (gsapFx.js) ────────────────────────────────── */

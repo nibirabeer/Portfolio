@@ -59,7 +59,7 @@ function drawConstellation(ctx, w, h, nodes) {
   nodes.forEach((n) => {
     ctx.beginPath();
     ctx.arc(n.x * w, n.y * h, 2, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(17,17,17,0.2)';
+    ctx.fillStyle = 'rgba(17,17,17,0.22)';
     ctx.fill();
   });
 }
@@ -109,6 +109,7 @@ export default function PageBackground({ variant = 'grid' }) {
     let height = 0;
     let animId;
     let t = 0;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const nodes = variant === 'constellation' ? makeConstellation() : null;
 
     const resize = () => {
@@ -120,21 +121,27 @@ export default function PageBackground({ variant = 'grid' }) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
-    window.addEventListener('resize', resize);
 
-    const loop = () => {
-      t += 0.012;
+    const draw = () => {
       if (variant === 'grid') drawGrid(ctx, width, height, t);
       else if (variant === 'constellation') drawConstellation(ctx, width, height, nodes);
       else if (variant === 'waves') drawWaves(ctx, width, height, t);
       else if (variant === 'radar') drawRadar(ctx, width, height, t);
-      animId = requestAnimationFrame(loop);
+      if (!reduceMotion) {
+        t += 0.012;
+        animId = requestAnimationFrame(draw);
+      }
     };
-    loop();
+    draw();
+    const handleResize = () => {
+      resize();
+      if (reduceMotion) draw();
+    };
+    window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [variant]);
 

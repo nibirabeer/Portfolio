@@ -6,6 +6,7 @@ import CookieConsentPopup from './components/CookieConsentPopup';
 import Navbar      from './components/Navbar';
 import Footer      from './components/Footer';
 import Preloader   from './components/Preloader';
+import RouteWave   from './components/RouteWave';
 
 // Home page sections
 import Header      from './components/Header';
@@ -49,6 +50,7 @@ function App() {
   return (
     <Router>
       <Preloader />
+      <RouteWave />
       <CookieConsentPopup
         visible={cookieVisible}
         onAccept={() => handleCookieChoice('accepted')}

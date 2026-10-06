@@ -1,390 +1,81 @@
-/* ─── Footer shell ───────────────────────────────────────── */
 .footer {
   position: relative;
   width: 100%;
-  background: #fff;
-  color: #111;
+  padding: 52px 0 22px;
   overflow: hidden;
-  padding: 52px 0 0;
+  border-top: 1px solid var(--line);
+  background: var(--page-bg);
+  color: var(--ink);
 }
 
-/* Floating particles canvas */
-.footer-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Content sits above canvas */
 .footer-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 1100px;
+  width: min(100% - 64px, 1160px);
   margin: 0 auto;
-  padding: 0 32px;
 }
 
-/* ─── Top grid: brand+capture on the left, link columns on the right ─── */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(250px, .85fr);
+  gap: clamp(40px, 8vw, 120px);
   align-items: start;
 }
 
-/* Brand block */
-.footer-brand-col {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.footer-brand-col { display: grid; gap: 26px; max-width: 480px; }
+.footer-brand { display: flex; align-items: center; gap: 11px; }
+.footer-logo-mark { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; overflow: hidden; border-radius: 9px; }
+.footer-logo-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.footer-brand-name { margin: 0; color: var(--ink); font: 700 15px/1.2 "Hanken Grotesk",sans-serif; }
+.footer-brand-sub { margin: 4px 0 0; color: var(--muted); font: 400 12px/1.4 "Hanken Grotesk",sans-serif; }
+
+.footer-capture { max-width: 400px; }
+.footer-capture-label { display: block; margin: 0 0 11px; color: var(--ink); font: 600 13px/1.4 "Hanken Grotesk",sans-serif; }
+.footer-capture-form { display: flex; width: 100%; min-height: 44px; align-items: center; gap: 8px; padding: 4px 5px 4px 13px; border: 1px solid var(--line); border-radius: var(--r-sm); background: rgba(255,255,255,.7); transition: border-color 180ms ease,background 180ms ease; }
+.footer-capture-form:focus-within { border-color: rgba(23,23,23,.42); background: #fff; }
+.footer-capture-input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: 400 13px/1.4 "Hanken Grotesk",sans-serif; }
+.footer-capture-input::placeholder { color: var(--muted); opacity: .78; }
+.footer-capture-submit { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border: 0; border-radius: 7px; background: var(--ink); color: #fff; cursor: pointer; transition: background 180ms ease,transform 180ms ease; }
+.footer-capture-submit:hover:not(:disabled) { background: #333; transform: translateX(1px); }
+.footer-capture-submit:disabled { opacity: .55; cursor: wait; }
+.footer-capture-sent,.footer-capture-error { margin: 0; color: var(--muted); font: 500 13px/1.5 "Hanken Grotesk",sans-serif; }
+.footer-capture-error { margin-top: 8px; }
+
+.footer-links-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(24px,5vw,64px); }
+.footer-link-col { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-link-heading { margin: 2px 0 15px; color: var(--muted); font: 600 10px/1.3 "Hanken Grotesk",sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.footer-link { display: inline-flex; width: fit-content; margin: 0 0 10px; color: var(--muted); font: 500 13px/1.4 "Hanken Grotesk",sans-serif; text-decoration: none; transition: color 160ms ease; }
+.footer-link:hover { color: var(--ink); }
+.footer-socials { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.footer-social-btn { display: inline-flex; align-items: center; gap: 9px; color: var(--muted); text-decoration: none; transition: color 160ms ease,transform 160ms ease; }
+.footer-social-btn:hover { color: var(--ink); transform: translateX(2px); }
+.footer-social-icon { display: inline-flex; width: 16px; height: 16px; flex: 0 0 16px; align-items: center; justify-content: center; }
+.footer-social-icon svg { display: block; width: 15px; height: 15px; }
+.footer-social-label { color: inherit; font: 500 13px/1.4 "Hanken Grotesk",sans-serif; }
+
+.footer-divider { width: 100%; height: 1px; margin: 36px 0 18px; background: var(--line); }
+.footer-bottom { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; }
+.footer-copy,.footer-status { margin: 0; color: var(--muted); font: 400 11.5px/1.5 "Hanken Grotesk",sans-serif; }
+.footer-status { display: inline-flex; align-items: center; gap: 8px; justify-self: center; }
+.footer-dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: var(--ink); }
+.footer a:focus-visible,.footer button:focus-visible,.footer input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+@media (max-width: 680px) {
+  .footer { padding: 40px 0 20px; }
+  .footer-inner { width: calc(100% - 40px); }
+  .footer-grid { grid-template-columns: 1fr; gap: 34px; }
+  .footer-links-grid { gap: 32px; }
+  .footer-capture { width: 100%; }
+  .footer-divider { margin: 28px 0 16px; }
+  .footer-bottom { grid-template-columns: 1fr; gap: 9px; }
+  .footer-status { grid-column: 1 / -1; grid-row: 1; justify-self: start; }
+  .footer-copy { grid-column: 1; grid-row: 2; }
 }
 
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  animation: fadeUp 0.6s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Same transparent-container pattern as the navbar's .logo-mark — the
-   footer is light now, so the regular dark logo reads directly on it. */
-.footer-logo-mark {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.2s;
-}
-
-.footer-logo-mark:hover {
-  transform: rotate(-6deg) scale(1.06);
-}
-
-.footer-brand-name {
-  font-size: 16px;
-  font-weight: 700;
-  font-family: "Hedvig Letters Serif", serif;
-  color: #111;
-  margin: 0 0 2px;
-  letter-spacing: 0.1px;
-}
-
-.footer-brand-sub {
-  font-size: 12px;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: rgba(17, 17, 17, 0.5);
-  margin: 0;
-}
-
-/* Quick-contact capture — a real Formspree submission, styled like a
-   newsletter row (underline input + arrow button). */
-.footer-capture {
-  animation: fadeUp 0.6s 0.15s ease both;
-}
-
-.footer-capture-label {
-  font-size: 14px;
-  font-weight: 700;
-  font-family: "Hedvig Letters Serif", serif;
-  color: #111;
-  margin: 0 0 12px;
-}
-
-.footer-capture-form {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 320px;
-  border-bottom: 1.5px solid rgba(17, 17, 17, 0.2);
-  padding-bottom: 8px;
-  transition: border-color 0.2s;
-}
-
-.footer-capture-form:focus-within { border-color: #111; }
-
-.footer-capture-input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 13.5px;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: #111;
-}
-
-.footer-capture-input::placeholder { color: rgba(17, 17, 17, 0.4); }
-
-.footer-capture-submit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  flex-shrink: 0;
-  border: none;
-  background: transparent;
-  color: #111;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.footer-capture-submit:hover:not(:disabled) { transform: translateX(3px); }
-.footer-capture-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.footer-capture-sent {
-  font-size: 13px;
-  font-weight: 600;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: #15803d;
-  margin: 0;
-}
-
-.footer-capture-error {
-  font-size: 12px;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: #dc2626;
-  margin: 8px 0 0;
-}
-
-/* Link columns */
-.footer-links-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  animation: fadeUp 0.6s 0.2s ease both;
-}
-
-.footer-link-heading {
-  font-size: 11px;
-  font-weight: 700;
-  font-family: "Hanken Grotesk", sans-serif;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: #111;
-  margin: 0 0 14px;
-}
-
-.footer-link {
-  display: block;
-  font-size: 13.5px;
-  font-weight: 500;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: rgba(17, 17, 17, 0.55);
-  text-decoration: none;
-  margin-bottom: 11px;
-  transition: color 0.18s, letter-spacing 0.18s;
-}
-
-.footer-link:hover {
-  color: #111;
-  letter-spacing: 0.3px;
-}
-
-/* Connect column — icon buttons, hover-expand label (restored from the
-   original dark footer, recoloured for the light background). */
-.footer-socials {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer-social-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: var(--r-sm);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px) saturate(150%);
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
-  box-shadow: var(--glass-sheen);
-  color: rgba(17, 17, 17, 0.6);
-  text-decoration: none;
-  transition: background 0.18s, color 0.18s, transform 0.18s, width 0.25s;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.footer-social-btn:hover {
-  background: var(--glass-bg-strong);
-  border-color: rgba(17, 17, 17, 0.2);
-  color: #111;
-  transform: translateY(-3px);
-  width: auto;
-  padding: 0 12px 0 10px;
-  gap: 6px;
-}
-
-.footer-social-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.footer-social-icon svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-.footer-social-label {
-  font-size: 12px;
-  font-weight: 500;
-  font-family: "Hanken Grotesk", sans-serif;
-  white-space: nowrap;
-  max-width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-width 0.25s ease, opacity 0.2s ease;
-}
-
-.footer-social-btn:hover .footer-social-label {
-  max-width: 80px;
-  opacity: 1;
-}
-
-/* ─── Divider ────────────────────────────────────────────── */
-.footer-divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(17, 17, 17, 0.12) 20%,
-    rgba(17, 17, 17, 0.12) 80%,
-    transparent
-  );
-  margin: 36px 0 24px;
-  animation: expandWidth 0.8s 0.3s ease both;
-}
-
-@keyframes expandWidth {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-/* ─── Bottom row ─────────────────────────────────────────── */
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-bottom: 28px;
-  animation: fadeUp 0.6s 0.35s ease both;
-}
-
-.footer-copy {
-  font-size: 12px;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: rgba(17, 17, 17, 0.4);
-  margin: 0;
-}
-
-/* Open-to-work status pill */
-.footer-status {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  font-family: "Hanken Grotesk", sans-serif;
-  font-weight: 500;
-  color: #15803d;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  padding: 5px 12px;
-  border-radius: 999px;
-}
-
-.footer-dot {
-  width: 7px;
-  height: 7px;
-  background: #22c55e;
-  border-radius: 50%;
-  flex-shrink: 0;
-  animation: pulse-dot 2.2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.75); }
-}
-
-/* Made with love */
-.footer-made {
-  font-size: 12px;
-  font-family: "Hanken Grotesk", sans-serif;
-  color: rgba(17, 17, 17, 0.4);
-  margin: 0;
-}
-
-.footer-heart {
-  color: #f87171;
-  display: inline-block;
-  animation: heartbeat 1.4s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  14%       { transform: scale(1.25); }
-  28%       { transform: scale(1); }
-  42%       { transform: scale(1.18); }
-  70%       { transform: scale(1); }
-}
-
-/* ─── Big wordmark logo — closing flourish ───────────────────────────── */
-.footer-wordmark {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-  padding: 10px 24px 28px;
-  border-top: 1px solid rgba(17, 17, 17, 0.08);
-  animation: fadeUp 0.7s 0.4s ease both;
-}
-
-.footer-wordmark-img {
-  width: 100%;
-  max-width: 1000px;
-  height: auto;
-  display: block;
-}
-
-/* ─── Responsive ─────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-inner { padding: 0 20px; }
-  .footer        { padding: 40px 0 0; }
-  .footer-wordmark { padding: 10px 16px 22px; }
+@media (max-width: 360px) {
+  .footer-inner { width: calc(100% - 32px); }
   .footer-links-grid { gap: 20px; }
+  .footer-copy,.footer-status { font-size: 10.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer *, .footer *::before, .footer *::after { scroll-behavior: auto; transition-duration: .01ms; }
 }

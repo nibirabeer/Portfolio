@@ -91,6 +91,7 @@ const Navbar = () => {
               <Link
                 to={path}
                 className={`nav-link ${location.pathname === path ? 'nav-link--active' : ''}`}
+                aria-current={location.pathname === path ? 'page' : undefined}
               >
                 {label}
                 <span className="nav-link-underline" />
@@ -118,6 +119,8 @@ const Navbar = () => {
             className={`hamburger ${menuOpen ? 'hamburger--open' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
           >
             <span /><span /><span />
           </button>
@@ -125,7 +128,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile drawer */}
-      <div className={`mobile-menu ${menuOpen ? 'mobile-menu--open' : ''}`}>
+      <div id="mobile-navigation" className={`mobile-menu ${menuOpen ? 'mobile-menu--open' : ''}`}>
         <ul>
           {NAV_LINKS.map(({ label, path }) => (
             <li key={label}>

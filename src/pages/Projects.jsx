@@ -21,6 +21,19 @@ function getVercelUrl(repoName) {
   return key ? VERCEL_LINKS[key] : null;
 }
 
+function getHomepageUrl(value) {
+  if (!value) return null;
+  try {
+    const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
+    if (!['http:', 'https:'].includes(url.protocol) || ['github.com', 'www.github.com'].includes(url.hostname.toLowerCase())) return null;
+    return url.href;
+  } catch { return null; }
+}
+
+function getProjectDemoUrl(repo) {
+  return getHomepageUrl(repo.homepage) || getVercelUrl(repo.name);
+}
+
 function getStatus(repo) {
   // Manual override in projectStatus.js takes priority
   const manual = Object.keys(PROJECT_STATUS).find(
@@ -64,7 +77,7 @@ function SkeletonCard() {
 }
 
 export default function Projects() {
-  const { repos, loading, error } = useGitHubRepos();
+  const { repos, loading, error, retry } = useGitHubRepos();
   const [active, setActive] = useState('All');
 
   const publicProjects = repos.map(r => ({
@@ -76,7 +89,7 @@ export default function Projects() {
     year:      new Date(r.created_at).getFullYear().toString(),
     stars:     r.stargazers_count,
     repo:      r.html_url,
-    demo:      getVercelUrl(r.name) || r.homepage || null,
+    demo:      getProjectDemoUrl(r),
     featured:  r.stargazers_count > 0,
     isPrivate: false,
   }));
@@ -120,6 +133,7 @@ export default function Projects() {
                 key={f}
                 className={`proj-filter-btn ${active === f ? 'proj-filter-btn--active' : ''}`}
                 onClick={() => setActive(f)}
+                aria-pressed={active === f}
               >
                 {f}
                 {f !== 'All' && !loading && (
@@ -146,7 +160,10 @@ export default function Projects() {
         {/* Error state */}
         {error && (
           <div className="proj-empty">
-            <p>Couldn't load GitHub repos right now.</p>
+            <p>{repos.length ? `Showing saved GitHub projects. ${error}` : error}</p>
+            <button type="button" className="proj-link proj-link--ghost" onClick={retry} style={{ marginTop: 12 }}>
+              Retry GitHub
+            </button>
             <a href="https://github.com/nibirabeer" target="_blank" rel="noreferrer" className="proj-link proj-link--ghost" style={{ marginTop: 12, display:'inline-flex' }}>
               {GH_ICON} View on GitHub
             </a>
@@ -154,7 +171,7 @@ export default function Projects() {
         )}
 
         {/* Loading skeletons */}
-        {loading && (
+        {loading && repos.length === 0 && (
           <div className="grid-2">
             {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
           </div>
@@ -168,7 +185,7 @@ export default function Projects() {
         )}
 
         {/* Cards */}
-        {!loading && !error && (
+        {!loading && (repos.length > 0 || privateProjects.length > 0) && (
           <div className="grid-2">
             {filtered.map((p, i) => (
               <div

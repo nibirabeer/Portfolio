@@ -3,14 +3,16 @@
 .page-wrapper {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   padding-top: 100px; /* clears fixed navbar */
+  isolation: isolate;
 }
 
 /* Hero banner at top of each page */
 .page-hero {
-  max-width: 1100px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 60px 32px 40px;
+  padding: 72px 32px 48px;
 }
 
 .page-tag {
@@ -58,9 +60,9 @@
 
 /* Section container */
 .page-section {
-  max-width: 1100px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 0 32px 80px;
+  padding: 0 32px 88px;
 }
 
 /* Divider line */
@@ -103,6 +105,10 @@
   transform: translateY(-3px);
 }
 
+.card:focus-within {
+  border-color: rgba(23, 23, 23, 0.22);
+}
+
 /* Grid helpers */
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
@@ -122,8 +128,8 @@
 }
 
 @media (max-width: 768px) {
-  .page-hero    { padding: 40px 20px 28px; }
-  .page-section { padding: 0 20px 60px; }
+  .page-hero    { padding: 48px 24px 32px; }
+  .page-section { padding: 0 24px 64px; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .page-title   { font-size: clamp(40px, 10vw, 72px); letter-spacing: -1px; }
   .page-divider { margin: 32px 0; }
@@ -136,4 +142,12 @@
   .page-title    { font-size: clamp(36px, 9vw, 56px); }
   .page-subtitle { font-size: 14.5px; }
   .card          { padding: 20px; border-radius: 12px; }
+}
+
+@media (max-width: 360px) {
+  .page-hero { padding-inline: 18px; }
+  .page-section { padding-inline: 18px; }
+  .page-title { font-size: 34px; letter-spacing: -1.2px; }
+  .proj-topbar { align-items: flex-start; }
+  .proj-github-btn { padding-inline: 11px; }
 }
